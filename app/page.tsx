@@ -98,7 +98,7 @@ export default function Home() {
 
   if (step === "welcome") {
     return (
-      <main className="min-h-screen bg-[url(../components/ui/images/background.png)] bg-cover from-blue-50 via-purple-50 to-pink-50">
+      <main className="min-h-screen from-blue-50 via-purple-50 to-pink-50">
         <div className="container mx-auto p-4">
           <div className="text-center mb-12">
             <div className="flex items-center justify-center mb-8">
@@ -119,7 +119,7 @@ export default function Home() {
           <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
             <Card className="text-center">
               <CardHeader>
-                <Globe className="w-12 h-12 mx-auto mb-4 text-blue-600" />
+                <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400" />
                 <CardTitle>Choose Your World</CardTitle>
               </CardHeader>
               <CardContent>
@@ -131,7 +131,7 @@ export default function Home() {
 
             <Card className="text-center">
               <CardHeader>
-                <ChefHat className="w-12 h-12 mx-auto mb-4 text-purple-600" />
+                <ChefHat className="w-12 h-12 mx-auto mb-4 text-[#c39c39]" />
                 <CardTitle>Explore Another</CardTitle>
               </CardHeader>
               <CardContent>
