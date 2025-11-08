@@ -57,6 +57,7 @@ export interface FusionRecipe {
   servings: number;
   prepTime: string;
   cookTime: string;
+  imageUrl?: string; // AI-generated image of the fusion dish
 }
 
 export interface FusionRecipeRequest {

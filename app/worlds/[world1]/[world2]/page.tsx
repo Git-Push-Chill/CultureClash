@@ -257,13 +257,24 @@ export default function BlendedWorldPage() {
                     className="overflow-hidden cursor-pointer hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400/60"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="relative h-48 w-full bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
-                      <div className="text-center p-4">
-                        <Sparkles className="w-12 h-12 mx-auto mb-2 text-yellow-400 animate-pulse" />
-                        <p className="text-white font-bold text-lg">
-                          Fusion Recipe
-                        </p>
-                      </div>
+                    <div className="relative h-48 w-full">
+                      {recipe.imageUrl ? (
+                        <Image
+                          src={recipe.imageUrl}
+                          alt={recipe.name}
+                          fill
+                          className="object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
+                          <div className="text-center p-4">
+                            <Sparkles className="w-12 h-12 mx-auto mb-2 text-yellow-400 animate-pulse" />
+                            <p className="text-white font-bold text-lg">
+                              Fusion Recipe
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       <Button
                         size="sm"
                         variant="ghost"
@@ -333,6 +344,19 @@ export default function BlendedWorldPage() {
                   className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto border-2 border-purple-400/50 shadow-2xl shadow-purple-500/50"
                   onClick={(e) => e.stopPropagation()}
                 >
+                  {/* Hero Image */}
+                  {selectedRecipe.imageUrl && (
+                    <div className="relative h-64 w-full">
+                      <Image
+                        src={selectedRecipe.imageUrl}
+                        alt={selectedRecipe.name}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
+                    </div>
+                  )}
+
                   <div className="sticky top-0 bg-gradient-to-r from-purple-600/90 to-pink-600/90 backdrop-blur-sm border-b border-purple-400/30 p-6 flex justify-between items-start z-10">
                     <div className="flex-1">
                       <h2 className="text-3xl font-bold text-white mb-2">
