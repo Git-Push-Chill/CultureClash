@@ -72,13 +72,15 @@ export default function Home() {
 
         <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
           <Card
-            className={``}
+            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 hover:border-blue-200/70 group ${
+              mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+            }`}
             style={{ transitionDelay: "100ms" }}
             onClick={handleStartJourney}
           >
             <CardHeader>
               <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" />
-              <CardTitle className="text-xl group-hover:text-blue-300 transition-colors">
+              <CardTitle className="text-xl text-blue-100 group-hover:text-blue-300 transition-colors">
                 Choose Your World
               </CardTitle>
             </CardHeader>
@@ -173,7 +175,6 @@ export default function Home() {
                   className="text-sm px-4 py-2 bg-linear-to-r from-pink-500 to-purple-500 border-2 border-pink-300 hover:scale-110 hover:border-pink-200 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-pink-500/30"
                   style={{ animationDelay: `${index * 100}ms` }}
                 >
-                  <Heart className="w-3 h-3 mr-1 fill-white" />
                   {food}
                 </Badge>
               ))}

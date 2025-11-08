@@ -90,17 +90,17 @@ export default function BlendedWorldPage() {
             <Button
               variant="outline"
               size="sm"
-              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Choose Different World
+              Choose Different Worlds
             </Button>
           </Link>
           <Link href="/">
             <Button
               variant="outline"
               size="sm"
-              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
               Back to Home
             </Button>
@@ -144,69 +144,48 @@ export default function BlendedWorldPage() {
                       className="object-cover"
                     />
                     <Badge
-                      className="absolute top-2 right-2"
-                      variant={
-                        meal.strArea === world1 ? "default" : "secondary"
-                      }
+                      className="absolute top-2 left-2 bg-black/70 text-white border-white/50"
+                      variant="outline"
                     >
                       {meal.strArea}
                     </Badge>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => toggleFavorite(meal.strMeal)}
+                      className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform bg-black/50 hover:bg-black/70 border-0"
+                    >
+                      <Heart
+                        className={`w-5 h-5 ${
+                          favoriteFoods.includes(meal.strMeal)
+                            ? "fill-red-500 text-red-500"
+                            : "text-white"
+                        }`}
+                      />
+                    </Button>
                   </div>
                   <CardHeader>
-                    <CardTitle className="flex items-center justify-between">
-                      <span>{meal.strMeal}</span>
-                      <Button
-                        size="sm"
-                        variant={
-                          favoriteFoods.includes(meal.strMeal)
-                            ? "default"
-                            : "outline"
-                        }
-                        onClick={() => toggleFavorite(meal.strMeal)}
-                        className="cursor-pointer hover:scale-110 transition-transform"
-                      >
-                        <Heart
-                          className={`w-4 h-4 ${
-                            favoriteFoods.includes(meal.strMeal)
-                              ? "fill-current"
-                              : ""
-                          }`}
-                        />
-                      </Button>
-                    </CardTitle>
+                    <CardTitle>{meal.strMeal}</CardTitle>
                     <CardDescription>{meal.strCategory}</CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <div className="space-y-2">
-                      <h4 className="font-semibold text-sm">Ingredients:</h4>
-                      <div className="flex flex-wrap gap-1">
+                    <div>
+                      <h4 className="font-bold text-base mb-2 text-white">
+                        Ingredients:
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
                         {getIngredients(meal)
                           .slice(0, 5)
                           .map((ingredient, idx) => (
                             <Badge
                               key={idx}
                               variant="outline"
-                              className="text-xs"
+                              className="text-sm px-3 py-1 bg-purple-500/10 border-purple-400/30 hover:bg-purple-500/20 hover:border-purple-400/50 transition-colors"
                             >
                               {ingredient}
                             </Badge>
                           ))}
                       </div>
-                      {meal.strTags && (
-                        <div className="mt-2">
-                          <div className="flex flex-wrap gap-1">
-                            {meal.strTags.split(",").map((tag, idx) => (
-                              <Badge
-                                key={idx}
-                                variant="secondary"
-                                className="text-xs"
-                              >
-                                {tag.trim()}
-                              </Badge>
-                            ))}
-                          </div>
-                        </div>
-                      )}
                     </div>
                   </CardContent>
                 </Card>

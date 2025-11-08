@@ -54,17 +54,17 @@ export default function SecondWorldPage() {
             <Button
               variant="outline"
               size="sm"
-              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
               <ArrowLeft className="w-4 h-4 mr-2" />
-              Explore More Worlds
+              Explore Different Worlds
             </Button>
           </Link>
           <Link href="/">
             <Button
               variant="outline"
               size="sm"
-              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
               Back to Home
             </Button>
@@ -83,7 +83,7 @@ export default function SecondWorldPage() {
         <div className="text-center mb-6">
           <Badge
             variant="secondary"
-            className="text-lg px-4 py-2 bg-linear-to-r from-purple-500/30 to-pink-500/30 border-2 border-purple-400 text-purple-100 shadow-lg shadow-purple-500/20"
+            className="text-lg px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] shadow-lg shadow-purple-500/20"
           >
             <Globe className="w-4 h-4 mr-2" />
             Home World: {world1}
