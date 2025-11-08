@@ -41,3 +41,32 @@ export interface CulturalBlend {
   meals: Meal[];
   blendedElements: string[];
 }
+
+export interface FusionRecipe {
+  name: string;
+  description: string;
+  world1Dish: string;
+  world2Dish: string;
+  ingredients: {
+    name: string;
+    amount: string;
+    origin: string; // world1, world2, or both
+  }[];
+  instructions: string[];
+  culturalNotes: string;
+  servings: number;
+  prepTime: string;
+  cookTime: string;
+}
+
+export interface FusionRecipeRequest {
+  world1: string;
+  world2: string;
+  meals1: Meal[];
+  meals2: Meal[];
+}
+
+export interface FusionRecipeResponse {
+  fusionRecipes: FusionRecipe[];
+  error?: string;
+}

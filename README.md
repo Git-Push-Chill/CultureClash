@@ -14,8 +14,12 @@ Culture Clash aims to bridge cultural divides through food by:
 ## Current Features
 
 - **🌍 World Selection**: Choose from 28+ different food cultures worldwide
+- **🤖 AI Fusion Recipes**: Generate creative fusion recipes using Google Gemini AI
+- **👨‍🍳 Smart Recipe Generation**: AI blends ingredients, techniques, and traditions from both cuisines
+- **📖 Detailed Recipes**: Complete with ingredients, instructions, prep/cook times, and cultural notes
 - **📱 Responsive Design**: Beautiful UI built with Tailwind CSS and shadcn/ui components
 - **🎨 Gradient Themes**: Eye-catching gradient backgrounds and visual effects
+- **💾 Local Storage**: Save your favorite dishes and track explored world combinations
 
 ## Technology Stack
 
@@ -51,13 +55,27 @@ cd CultureClash
 npm install
 ```
 
-3. Run the development server:
+3. Set up environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Edit `.env.local` and add your Google Gemini API key:
+
+```
+GEMINI_API_KEY=your_gemini_api_key_here
+```
+
+Get your free API key from: https://makersuite.google.com/app/apikey
+
+4. Run the development server:
 
 ```bash
 npm run dev
 ```
 
-4. Open [http://localhost:3000](http://localhost:3000) in your browser
+5. Open [http://localhost:3000](http://localhost:3000) in your browser
 
 ### Build for Production
 
@@ -79,16 +97,17 @@ npm start
 - [x] Implement Cuisine Selection UI with proper routing
 - [x] Refactor to use Next.js App Router with dynamic routes
 - [x] Connect to Food Data API (TheMealDB integration)
+- [x] Build "Fuse Flavors" API Route with Google Gemini AI
+- [x] Integrate AI Prompt for Recipe Generation
+- [x] Display Generated Fusion Recipes with detailed UI
+- [x] Implement "Save to Favorites" Feature
+- [x] Implement Error Handling for API calls
 
 #### 🚧 In Progress (Backlog)
 
 **Core Features**
 
-- [ ] Build "Fuse Flavors" API Route
-- [ ] Integrate AI Prompt for Recipe Generation
-- [ ] Display Generated Fusion Recipe
-- [ ] Implement "Save to Favorites" Feature
-- [ ] Implement Validation & Error Handling
+- [ ] Add more robust validation for edge cases
 
 **Stretch Goals**
 
@@ -152,7 +171,7 @@ npm start
 ## API Integration
 
 - **Food Data**: [TheMealDB API](https://www.themealdb.com/api.php) for cuisine information
-- **AI Integration**: To be implemented for recipe generation
+- **AI Integration**: [Google Gemini AI](https://ai.google.dev/) (gemini-1.5-flash model) for fusion recipe generation
 - **Image Generation**: To be implemented for visual representation of fusion dishes
 
 ## Deployment
