@@ -1,14 +1,19 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
+import { motion } from "framer-motion";
 
 const Card = React.forwardRef<
   HTMLDivElement,
-  React.HTMLAttributes<HTMLDivElement>
+  React.ComponentPropsWithoutRef<typeof motion.div>
 >(({ className, ...props }, ref) => (
-  <div
+  <motion.div
     ref={ref}
+    initial={{ opacity: 0, scale: 0.95 }}
+    animate={{ opacity: 1, scale: 1 }}
+    whileHover={{ scale: 1.04, boxShadow: "0 8px 32px rgb(0, 151, 167)" }}
+    transition={{ type: "spring", stiffness: 300, damping: 20 }}
     className={cn(
-      "rounded-lg border bg-[#c768db] text-card-foreground shadow-sm hover:shadow-lg cursor-pointer",
+      "rounded-lg border bg-[#a104c3] text-card-foreground cursor-pointer",
       className
     )}
     {...props}
@@ -74,6 +79,19 @@ const CardFooter = React.forwardRef<
   />
 ));
 CardFooter.displayName = "CardFooter";
+
+// When rendering icons inside Card, CardHeader, CardFooter, etc.,
+// ensure you add a high-contrast color class, e.g.:
+//
+// <SomeIcon className="text-white" />
+//
+// If you pass icons as children or via props, ensure they receive `text-white` or similar.
+//
+// Example for CardHeader usage:
+// <CardHeader>
+//   <SomeIcon className="text-white" />
+//   {/* ...other content... */}
+// </CardHeader>
 
 export {
   Card,
