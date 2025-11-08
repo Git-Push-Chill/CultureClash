@@ -1,28 +1,33 @@
-# Bridge - When Worlds Collide 🌍✨
+# Culture Clash - Where Taste Bridges Worlds 🌍✨
 
-A Next.js web application that connects global cuisines by letting users explore cross-cultural food experiences. Choose your favorite food culture, blend it with another world, and discover unique dishes that bridge different culinary traditions.
+A Next.js web application that connects global cuisines by letting users explore cross-cultural food experiences and generate fusion recipes using AI. Choose your favorite food culture, blend it with another world, and discover unique dishes that bridge different culinary traditions.
 
-![Bridge Homepage](https://github.com/user-attachments/assets/c307a258-f85a-4dd1-823d-97ad6266a626)
+## Project Vision
 
-## Features
+Culture Clash aims to bridge cultural divides through food by:
+
+- Allowing users to explore cuisines from 28+ countries
+- Generating AI-powered fusion recipes that blend culinary traditions
+- Creating personalized cross-cultural dining experiences
+- Building a community around global food exploration
+
+## Current Features
 
 - **🌍 World Selection**: Choose from 28+ different food cultures worldwide
-- **🍳 Cultural Blending**: Select two worlds to create a unique cross-cultural dining experience
-- **❤️ Favorites System**: Save your favorite dishes with local storage persistence
 - **📱 Responsive Design**: Beautiful UI built with Tailwind CSS and shadcn/ui components
 - **🎨 Gradient Themes**: Eye-catching gradient backgrounds and visual effects
-- **🔄 Journey Tracking**: Keep track of all the worlds you've explored
-- **🍜 Rich Meal Data**: View detailed ingredients, categories, and tags for each dish
 
 ## Technology Stack
 
-- **Framework**: Next.js 16 with App Router
+- **Framework**: Next.js 15 with App Router
 - **Language**: TypeScript
-- **Styling**: Tailwind CSS with custom theme
+- **Styling**: Tailwind CSS v4 with custom theme
 - **UI Components**: shadcn/ui components
 - **Icons**: Lucide React
 - **API**: TheMealDB API (with fallback mock data)
-- **Deployment**: Vercel-ready configuration
+- **AI**: To be integrated for recipe generation
+- **Database**: To be integrated (Vercel Postgres/Supabase)
+- **Deployment**: Vercel
 
 ## Getting Started
 
@@ -34,17 +39,20 @@ A Next.js web application that connects global cuisines by letting users explore
 ### Installation
 
 1. Clone the repository:
+
 ```bash
-git clone https://github.com/Ibby02/When-Worlds-Collide-2025.git
-cd When-Worlds-Collide-2025
+git clone https://github.com/Git-Push-Chill/CultureClash.git
+cd CultureClash
 ```
 
 2. Install dependencies:
+
 ```bash
 npm install
 ```
 
 3. Run the development server:
+
 ```bash
 npm run dev
 ```
@@ -58,69 +66,98 @@ npm run build
 npm start
 ```
 
-## How It Works
+## Development Roadmap
+
+### Functional Requirements
+
+#### ✅ Completed
+
+- [x] Create DevPost Project
+- [x] Make CoPilot Starter Template
+- [x] Set up initial project structure
+- [x] Implement basic UI with shadcn/ui components
+- [x] Implement Cuisine Selection UI with proper routing
+- [x] Refactor to use Next.js App Router with dynamic routes
+- [x] Connect to Food Data API (TheMealDB integration)
+
+#### 🚧 In Progress (Backlog)
+
+**Core Features**
+
+- [ ] Build "Fuse Flavors" API Route
+- [ ] Integrate AI Prompt for Recipe Generation
+- [ ] Display Generated Fusion Recipe
+- [ ] Implement "Save to Favorites" Feature
+- [ ] Implement Validation & Error Handling
+
+**Stretch Goals**
+
+- [ ] Add AI Image Generation/Handling for fusion dishes
+- [ ] Implement User Auth & Accounts
+- [ ] Integrate Vercel Postgres/Supabase for data persistence
+- [ ] "Randomize Fusion" Button for surprise combinations
+- [ ] "Refine Fusion" Button for iterative recipe improvement
+
+### Non-Functional Requirements
+
+- [ ] Optimize AI API Calls for performance
+- [ ] Ensure Accessibility (WCAG 2.1 compliance)
+
+### Misc Tasks
+
+- [ ] Prepare Hackathon Demo Script
+
+## How It Will Work (Planned)
 
 1. **Welcome Screen**: Start your journey from the homepage
 2. **Select Home World**: Choose your favorite food culture
 3. **Select Second World**: Pick another culture to blend with
-4. **Explore Blended Dishes**: View curated meals from both cultures
-5. **Save Favorites**: Click the heart icon to save dishes you love
-6. **Journey History**: See all the worlds you've explored on the homepage
-
-## Screenshots
-
-### Homepage
-![Homepage](https://github.com/user-attachments/assets/c307a258-f85a-4dd1-823d-97ad6266a626)
-
-### World Selection
-![World Selection](https://github.com/user-attachments/assets/927b25b6-e147-489f-8808-2561d0c13d5d)
-
-### Second World Selection
-![Second World](https://github.com/user-attachments/assets/c025d892-5cde-40ad-9d79-b21a9e02eb9e)
-
-### Blended Experience
-![Blended Meals](https://github.com/user-attachments/assets/8e6a7cca-fd48-406b-bbf6-8b6ff6d35e08)
-
-### Homepage with Favorites
-![Homepage with Favorites](https://github.com/user-attachments/assets/69bfe386-ecba-4abd-873f-1bf15032501c)
+4. **AI Fusion Generation**: Get AI-generated fusion recipes combining both cuisines
+5. **View Fusion Recipe**: See detailed ingredients, instructions, and cultural context
+6. **Save Favorites**: Save fusion recipes to your account
+7. **Journey History**: Track all the worlds you've explored and recipes you've created
 
 ## Project Structure
 
 ```
 .
 ├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Main application page
-│   └── globals.css         # Global styles and CSS variables
+│   ├── layout.tsx                      # Root layout with metadata
+│   ├── page.tsx                        # Homepage/welcome screen
+│   ├── globals.css                     # Global styles and CSS variables
+│   └── worlds/
+│       ├── page.tsx                    # World selection (first world)
+│       └── [world1]/
+│           ├── page.tsx                # Second world selection
+│           └── [world2]/
+│               └── page.tsx            # Blended results page
 ├── components/
-│   └── ui/                 # Reusable UI components
+│   └── ui/                             # Reusable UI components
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── badge.tsx
 │       └── input.tsx
 ├── lib/
 │   ├── api/
-│   │   └── meals.ts        # API integration and mock data
-│   ├── types.ts            # TypeScript type definitions
-│   └── utils.ts            # Utility functions
-├── next.config.ts          # Next.js configuration
-├── tailwind.config.ts      # Tailwind CSS configuration
-└── tsconfig.json           # TypeScript configuration
+│   │   └── meals.ts                    # API integration and mock data
+│   ├── hooks/
+│   │   └── useLocalStorage.ts          # Custom hook for localStorage
+│   ├── types.ts                        # TypeScript type definitions
+│   └── utils.ts                        # Utility functions
+├── next.config.ts                      # Next.js configuration
+├── tailwind.config.ts                  # Tailwind CSS configuration
+└── tsconfig.json                       # TypeScript configuration
 ```
 
 ## API Integration
 
-The app uses [TheMealDB API](https://www.themealdb.com/api.php) to fetch meal data. When the API is unavailable, it falls back to mock data to ensure a seamless user experience.
+- **Food Data**: [TheMealDB API](https://www.themealdb.com/api.php) for cuisine information
+- **AI Integration**: To be implemented for recipe generation
+- **Image Generation**: To be implemented for visual representation of fusion dishes
 
 ## Deployment
 
-This project is optimized for deployment on Vercel:
-
-1. Push your code to GitHub
-2. Import the project in Vercel
-3. Deploy with default settings
-
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/Ibby02/When-Worlds-Collide-2025)
+This project will be deployed on Vercel. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
 ## Available Worlds
 
@@ -128,14 +165,15 @@ American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, Frenc
 
 ## Contributing
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+This is a hackathon project for [Hackathon Name]. Contributions and feedback are welcome!
 
-## License
+## Team
 
-This project is licensed under the ISC License - see the [LICENSE](LICENSE) file for details.
+Project created for the GitHub Copilot Hackathon.
 
 ## Acknowledgments
 
 - Meal data provided by [TheMealDB](https://www.themealdb.com/)
 - Icons from [Lucide React](https://lucide.dev/)
-- UI components inspired by [shadcn/ui](https://ui.shadcn.com/)
+- UI components from [shadcn/ui](https://ui.shadcn.com/)
+- Built with [GitHub Copilot](https://github.com/features/copilot)
