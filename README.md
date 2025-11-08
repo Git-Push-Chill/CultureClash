@@ -1,33 +1,71 @@
 # Culture Clash - Where Taste Bridges Worlds 🌍✨
 
-A Next.js web application that connects global cuisines by letting users explore cross-cultural food experiences and generate fusion recipes using AI. Choose your favorite food culture, blend it with another world, and discover unique dishes that bridge different culinary traditions.
+> **🏆 Built for Booking.com Hackathon 2025**
 
-## Project Vision
+A Next.js web application that connects travelers with unique cross-cultural culinary experiences. Choose your favorite food culture, blend it with another world, and discover fusion dishes, hotels, restaurants, cooking classes, and food tours - all bookable through Booking.com!
 
-Culture Clash aims to bridge cultural divides through food by:
+## 🎯 Project Vision
 
-- Allowing users to explore cuisines from 28+ countries
-- Generating AI-powered fusion recipes that blend culinary traditions
-- Creating personalized cross-cultural dining experiences
-- Building a community around global food exploration
+Culture Clash bridges cultural divides through food by:
 
-## Current Features
+- 🌍 Exploring cuisines from 28+ countries worldwide
+- 🍽️ Discovering unique fusion dishes that blend culinary traditions
+- 🏨 Booking hotels and restaurants via Booking.com
+- 👨‍🍳 Finding cooking classes and food tours
+- 👥 Building a community through reviews and ratings
+- ✈️ Creating complete travel itineraries centered around food
 
-- **🌍 World Selection**: Choose from 28+ different food cultures worldwide
-- **📱 Responsive Design**: Beautiful UI built with Tailwind CSS and shadcn/ui components
-- **🎨 Gradient Themes**: Eye-catching gradient backgrounds and visual effects
+## ✨ Key Features
 
-## Technology Stack
+### � Culinary Discovery
 
-- **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 with custom theme
-- **UI Components**: shadcn/ui components
+- **Fusion Dishes**: Blend cuisines from 2 cultures (28+ options)
+- **Full Recipes**: Complete instructions, ingredients, and video tutorials
+- **Community Reviews**: Rate and review dishes, see what others think
+- **Favorites System**: Save your preferred dishes
+
+### 🏨 Booking.com Integration
+
+- **Hotels**: Browse and book hotels in both cultures
+- **Restaurants**: Find restaurants serving fusion cuisines
+- **Cooking Classes**: Book hands-on cooking workshops
+- **Food Tours**: Guided culinary experiences in each destination
+
+### 📱 User Experience
+
+- **Fully Responsive**: Perfect on mobile, tablet, and desktop
+- **Accessible**: WCAG AA compliant, screen reader friendly
+- **Smooth Animations**: Framer Motion powered transitions
+- **Fast Loading**: Optimized images and skeleton loaders
+
+### 🤝 Social Features
+
+- **Star Ratings**: 1-5 star rating system
+- **User Reviews**: Share your culinary experiences
+- **Like Reviews**: Support helpful reviews
+- **Community Stats**: Average ratings and review counts
+
+### 🚀 Travel Planning
+
+- **Export Itinerary**: Download your food journey as JSON
+- **Share Feature**: Share via social media or copy link
+- **Track Progress**: See your explored cultures
+- **Journey History**: Keep track of your favorites
+
+## 🛠️ Technology Stack
+
+- **Framework**: Next.js 16 (App Router)
+- **Language**: TypeScript 5
+- **Styling**: Tailwind CSS 4
+- **UI Components**: Custom + Framer Motion
 - **Icons**: Lucide React
-- **API**: TheMealDB API (with fallback mock data)
-- **AI**: To be integrated for recipe generation
-- **Database**: To be integrated (Vercel Postgres/Supabase)
-- **Deployment**: Vercel
+- **APIs**:
+  - TheMealDB (recipes)
+  - Booking.com (hotels/experiences - mock for demo)
+  - Dicebear (user avatars)
+  - Unsplash (high-quality images)
+- **State Management**: React Hooks + LocalStorage
+- **Deployment**: Vercel-ready
 
 ## Getting Started
 

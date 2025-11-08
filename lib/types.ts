@@ -33,6 +33,7 @@ export interface UserProfile {
   favoriteWorld: string;
   favoriteFoods: string[];
   exploredWorlds: string[];
+  savedItineraries: TravelItinerary[];
 }
 
 export interface CulturalBlend {
@@ -40,4 +41,45 @@ export interface CulturalBlend {
   world2: string;
   meals: Meal[];
   blendedElements: string[];
+  hotels?: Hotel[];
+  restaurants?: Restaurant[];
+}
+
+export interface Hotel {
+  id: string;
+  name: string;
+  location: string;
+  country: string;
+  city: string;
+  rating?: number;
+  price?: number;
+  currency?: string;
+  image?: string;
+  bookingUrl: string;
+  description?: string;
+}
+
+export interface Restaurant {
+  id: string;
+  name: string;
+  cuisine: string[];
+  location: string;
+  city: string;
+  country: string;
+  rating?: number;
+  priceRange?: string;
+  bookingUrl?: string;
+  image?: string;
+}
+
+export interface TravelItinerary {
+  id: string;
+  name: string;
+  world1: string;
+  world2: string;
+  meals: string[];
+  hotels: Hotel[];
+  restaurants: Restaurant[];
+  createdAt: Date;
+  notes?: string;
 }
