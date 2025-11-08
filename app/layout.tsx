@@ -13,7 +13,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="overscroll-none">
-      <body className="font-sans antialiased">{children}</body>
+      <body className="font-sans antialiased bg-[url('../public/background.png')] bg-cover bg-fixed bg-center min-h-screen">
+        {children}
+      </body>
     </html>
   );
 }

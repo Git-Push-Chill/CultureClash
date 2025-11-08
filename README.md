@@ -41,8 +41,8 @@ Culture Clash aims to bridge cultural divides through food by:
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/Ibby02/When-Worlds-Collide-2025.git
-cd When-Worlds-Collide-2025
+git clone https://github.com/Git-Push-Chill/CultureClash.git
+cd CultureClash
 ```
 
 2. Install dependencies:
@@ -76,13 +76,14 @@ npm start
 - [x] Make CoPilot Starter Template
 - [x] Set up initial project structure
 - [x] Implement basic UI with shadcn/ui components
+- [x] Implement Cuisine Selection UI with proper routing
+- [x] Refactor to use Next.js App Router with dynamic routes
+- [x] Connect to Food Data API (TheMealDB integration)
 
 #### 🚧 In Progress (Backlog)
 
 **Core Features**
 
-- [ ] Implement Cuisine Selection UI
-- [ ] Connect to Food Data API (TheMealDB integration)
 - [ ] Build "Fuse Flavors" API Route
 - [ ] Integrate AI Prompt for Recipe Generation
 - [ ] Display Generated Fusion Recipe
@@ -121,23 +122,31 @@ npm start
 ```
 .
 ├── app/
-│   ├── layout.tsx          # Root layout with metadata
-│   ├── page.tsx            # Main application page
-│   └── globals.css         # Global styles and CSS variables
+│   ├── layout.tsx                      # Root layout with metadata
+│   ├── page.tsx                        # Homepage/welcome screen
+│   ├── globals.css                     # Global styles and CSS variables
+│   └── worlds/
+│       ├── page.tsx                    # World selection (first world)
+│       └── [world1]/
+│           ├── page.tsx                # Second world selection
+│           └── [world2]/
+│               └── page.tsx            # Blended results page
 ├── components/
-│   └── ui/                 # Reusable UI components
+│   └── ui/                             # Reusable UI components
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── badge.tsx
 │       └── input.tsx
 ├── lib/
 │   ├── api/
-│   │   └── meals.ts        # API integration and mock data
-│   ├── types.ts            # TypeScript type definitions
-│   └── utils.ts            # Utility functions
-├── next.config.ts          # Next.js configuration
-├── tailwind.config.ts      # Tailwind CSS configuration
-└── tsconfig.json           # TypeScript configuration
+│   │   └── meals.ts                    # API integration and mock data
+│   ├── hooks/
+│   │   └── useLocalStorage.ts          # Custom hook for localStorage
+│   ├── types.ts                        # TypeScript type definitions
+│   └── utils.ts                        # Utility functions
+├── next.config.ts                      # Next.js configuration
+├── tailwind.config.ts                  # Tailwind CSS configuration
+└── tsconfig.json                       # TypeScript configuration
 ```
 
 ## API Integration
