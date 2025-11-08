@@ -135,21 +135,19 @@ export default function BlendedWorldPage() {
       setCookingClasses(experiences.cookingClasses);
       setFoodTours(experiences.foodTours);
 
-      // Update explored worlds
-      const stored = localStorage.getItem("bridgeProfile");
-      const profile = stored
-        ? JSON.parse(stored)
-        : { favoriteFoods: [], exploredWorlds: [] };
-      const newExploredWorlds = Array.from(
-        new Set([...(profile.exploredWorlds || []), world1, world2])
-      );
-      setExploredWorlds(newExploredWorlds);
-      saveToLocalStorage(profile.favoriteFoods || [], newExploredWorlds);
-    } catch (error) {
-      console.error("Error loading blended experience:", error);
-    } finally {
-      setLoading(false);
-    }
+    // Update explored worlds with combination format
+    const stored = localStorage.getItem("bridgeProfile");
+    const profile = stored
+      ? JSON.parse(stored)
+      : { favoriteFoods: [], exploredWorlds: [] };
+    const worldCombination = `${world1} / ${world2}`;
+    const newExploredWorlds = Array.from(
+      new Set([...(profile.exploredWorlds || []), worldCombination])
+    );
+    setExploredWorlds(newExploredWorlds);
+    saveToLocalStorage(profile.favoriteFoods || [], newExploredWorlds);
+
+    setLoading(false);
   };
 
   const toggleFavorite = (mealName: string) => {
@@ -242,20 +240,26 @@ export default function BlendedWorldPage() {
   };
 
   return (
-    <div className="min-h-screen" role="main">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <nav
-          className="mb-6 flex justify-between items-center flex-wrap gap-4"
-          aria-label="Navigation"
-        >
+    <main className="min-h-screen">
+      <div className="container mx-auto py-8 max-w-7xl">
+        <div className="mb-6 flex justify-between items-center">
           <Link href={`/worlds/${encodeURIComponent(world1)}`}>
             <Button
               variant="outline"
               size="sm"
-              aria-label="Choose a different world"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-              Choose Different World
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Choose Different Worlds
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
+            >
+              Back to Home
             </Button>
           </Link>
           <div className="flex gap-2">
@@ -280,122 +284,80 @@ export default function BlendedWorldPage() {
           </div>
         </nav>
 
-        <header className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-4">
-            <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-linear-to-r from-green-400 via-blue-500 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
               {world1}
             </span>
-            <Sparkles
-              className="inline-block w-6 h-6 sm:w-8 sm:h-8 mx-2 sm:mx-4 text-purple-600"
-              aria-hidden="true"
-            />
-            <span className="bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <Sparkles className="inline-block w-8 h-8 mx-4 text-purple-500 animate-pulse" />
+            <span className="bg-linear-to-r from-purple-500 via-pink-500 to-red-400 bg-clip-text text-transparent animate-gradient-x">
               {world2}
             </span>
-          </h1>
-          <p className="text-lg sm:text-xl text-gray-200 drop-shadow-md">
+          </h2>
+          <p className="text-xl text-gray-300">
             Your Blended Cultural Experience
           </p>
         </header>
 
         {loading ? (
-          <div className="space-y-8" aria-busy="true">
-            <div className="space-y-4">
-              <Skeleton className="h-8 w-48" />
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-                {Array.from({ length: 6 }).map((_, i) => (
-                  <Skeleton key={i} className="h-96 w-full" />
-                ))}
-              </div>
-            </div>
+          <div className="text-center py-20">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"></div>
+            <p className="mt-4">Creating your unique blend...</p>
           </div>
         ) : (
           <>
-            {/* Meals Section */}
-            <section className="mb-8" aria-labelledby="meals-heading">
-              <h2
-                id="meals-heading"
-                className="text-2xl sm:text-3xl font-bold mb-4 text-white drop-shadow-lg flex items-center gap-2"
-              >
-                <Sparkles className="w-6 h-6" aria-hidden="true" />
-                Fusion Dishes
-              </h2>
-              <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                {blendedMeals.map((meal) => (
-                  <Card key={meal.idMeal} className="overflow-hidden">
-                    <div
-                      className="relative h-48 w-full cursor-pointer"
-                      onClick={() => setSelectedMeal(meal)}
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
+              {blendedMeals.map((meal, index) => (
+                <Card
+                  key={meal.idMeal}
+                  className="overflow-hidden hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/5 to-pink-500/5 border-2 border-purple-400/20 hover:border-purple-400/50"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
+                  <div className="relative h-48 w-full">
+                    <Image
+                      src={meal.strMealThumb}
+                      alt={meal.strMeal}
+                      fill
+                      className="object-cover"
+                    />
+                    <Badge
+                      className="absolute top-2 left-2 bg-black/70 text-white border-white/50"
+                      variant="outline"
                     >
-                      <Image
-                        src={meal.strMealThumb}
-                        alt={meal.strMeal}
-                        fill
-                        className="object-cover hover:scale-105 transition-transform"
+                      {meal.strArea}
+                    </Badge>
+                    <Button
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => toggleFavorite(meal.strMeal)}
+                      className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform bg-black/50 hover:bg-black/70 border-0"
+                    >
+                      <Heart
+                        className={`w-5 h-5 ${
+                          favoriteFoods.includes(meal.strMeal)
+                            ? "fill-red-500 text-red-500"
+                            : "text-white"
+                        }`}
                       />
-                      <Badge
-                        className="absolute top-2 right-2"
-                        variant={
-                          meal.strArea === world1 ? "default" : "secondary"
-                        }
-                      >
-                        {meal.strArea}
-                      </Badge>
-                      {meal.strYoutube && (
-                        <Badge className="absolute top-2 left-2 bg-red-600 hover:bg-red-700">
-                          <Youtube
-                            className="w-3 h-3 mr-1"
-                            aria-hidden="true"
-                          />
-                          Video
-                        </Badge>
-                      )}
-                    </div>
-                    <CardHeader>
-                      <CardTitle className="flex items-center justify-between">
-                        <span
-                          className="cursor-pointer hover:text-primary"
-                          onClick={() => setSelectedMeal(meal)}
-                        >
-                          {meal.strMeal}
-                        </span>
-                        <Button
-                          size="sm"
-                          variant={
-                            favoriteFoods.includes(meal.strMeal)
-                              ? "default"
-                              : "outline"
-                          }
-                          onClick={() => toggleFavorite(meal.strMeal)}
-                          aria-label={`${
-                            favoriteFoods.includes(meal.strMeal)
-                              ? "Remove from"
-                              : "Add to"
-                          } favorites`}
-                        >
-                          <Heart
-                            className={`w-4 h-4 ${
-                              favoriteFoods.includes(meal.strMeal)
-                                ? "fill-current"
-                                : ""
-                            }`}
-                            aria-hidden="true"
-                          />
-                        </Button>
-                      </CardTitle>
-                      <CardDescription>{meal.strCategory}</CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <h4 className="font-semibold text-sm">Ingredients:</h4>
-                        <div className="flex flex-wrap gap-1">
-                          {getIngredients(meal)
-                            .slice(0, 5)
-                            .map((ingredient, idx) => (
-                              <Badge
-                                key={idx}
-                                variant="outline"
-                                className="text-xs"
+                    </Button>
+                  </div>
+                  <CardHeader>
+                    <CardTitle>{meal.strMeal}</CardTitle>
+                    <CardDescription>{meal.strCategory}</CardDescription>
+                  </CardHeader>
+                  <CardContent>
+                    <div>
+                      <h4 className="font-bold text-base mb-2 text-white">
+                        Ingredients:
+                      </h4>
+                      <div className="flex flex-wrap gap-2">
+                        {getIngredients(meal)
+                          .slice(0, 5)
+                          .map((ingredient, idx) => (
+                            <Badge
+                              key={idx}
+                              variant="outline"
+                              className="text-sm px-3 py-1 bg-purple-500/10 border-purple-400/30 hover:bg-purple-500/20 hover:border-purple-400/50 transition-colors"
                               >
                                 {ingredient}
                               </Badge>

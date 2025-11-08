@@ -47,33 +47,45 @@ export default function SecondWorldPage() {
   }
 
   return (
-    <div className="min-h-screen" role="main">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <nav className="mb-6" aria-label="Breadcrumb">
+    <main className="min-h-screen">
+      <div className="container mx-auto py-8 max-w-6xl">
+        <div className="mb-6 flex justify-between items-center">
           <Link href="/worlds">
             <Button
               variant="outline"
               size="sm"
-              aria-label="Go back to worlds selection"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
-              Back to Worlds
+              <ArrowLeft className="w-4 h-4 mr-2" />
+              Explore Different Worlds
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
+            >
+              Back to Home
             </Button>
           </Link>
         </nav>
 
-        <header className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-white drop-shadow-lg">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-green-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
             Choose Another World to Explore
-          </h1>
-          <p className="text-base sm:text-lg text-gray-200 drop-shadow-md">
+          </h2>
+          <p className="text-lg text-gray-300">
             Blend {world1} with another culture
           </p>
-        </header>
+        </div>
 
-        <div className="text-center mb-6" role="status" aria-live="polite">
-          <Badge variant="secondary" className="text-base sm:text-lg px-4 py-2">
-            <Globe className="w-4 h-4 mr-2" aria-hidden="true" />
+        <div className="text-center mb-6">
+          <Badge
+            variant="secondary"
+            className="text-lg px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] shadow-lg shadow-purple-500/20"
+          >
+            <Globe className="w-4 h-4 mr-2" />
             Home World: {world1}
           </Badge>
         </div>

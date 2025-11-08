@@ -81,52 +81,40 @@ export default function WorldsPage() {
   }
 
   return (
-    <div className="min-h-screen" role="main">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-8">
-        <nav className="mb-6" aria-label="Breadcrumb">
+    <main className="min-h-screen">
+      <div className="container mx-auto py-8 max-w-6xl">
+        <div className="mb-6 flex justify-between items-center">
           <Link href="/">
             <Button
               variant="outline"
               size="sm"
-              aria-label="Go back to home page"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+              <ArrowLeft className="w-4 h-4 mr-2" />
               Back to Home
             </Button>
           </Link>
         </nav>
 
-        <header className="text-center mb-6 sm:mb-8">
-          <h1 className="text-3xl sm:text-4xl font-bold mb-2 text-white drop-shadow-lg">
+        <div className="text-center mb-8">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-green-400 via-purple-500 to-pink-500 bg-clip-text text-transparent animate-gradient-x">
             Choose Your Home World
-          </h1>
-          <p className="text-base sm:text-lg text-gray-200 drop-shadow-md">
-            Select your favorite food culture to begin
-          </p>
-        </header>
+          </h2>
+          <p className="text-lg">Select your favorite food culture to begin</p>
+        </div>
 
-        <div
-          className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4 max-w-6xl mx-auto"
-          role="list"
-          aria-label="Available food cultures"
-        >
-          {areas.map((area) => (
-            <div key={area} role="listitem">
-              <Card
-                className="cursor-pointer hover:shadow-lg transition-all hover:scale-105 focus-within:ring-2 focus-within:ring-primary focus-within:ring-offset-2"
-                onClick={() => handleSelectWorld(area)}
-                onKeyDown={(e) => handleKeyDown(e, area)}
-                tabIndex={0}
-                role="button"
-                aria-label={`Select ${area} cuisine`}
-              >
-                <CardHeader>
-                  <CardTitle className="text-base sm:text-lg text-center">
-                    {area}
-                  </CardTitle>
-                </CardHeader>
-              </Card>
-            </div>
+        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+          {areas.map((area, index) => (
+            <Card
+              key={area}
+              className="cursor-pointer hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400"
+              onClick={() => handleSelectWorld(area)}
+              style={{ animationDelay: `${index * 50}ms` }}
+            >
+              <CardHeader>
+                <CardTitle className="text-lg text-center">{area}</CardTitle>
+              </CardHeader>
+            </Card>
           ))}
         </div>
       </div>

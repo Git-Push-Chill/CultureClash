@@ -12,10 +12,7 @@ const Card = React.forwardRef<
     animate={{ opacity: 1, scale: 1 }}
     whileHover={{ scale: 1.04, boxShadow: "0 8px 32px rgb(0, 151, 167)" }}
     transition={{ type: "spring", stiffness: 300, damping: 20 }}
-    className={cn(
-      "rounded-lg border bg-[#a104c3] text-card-foreground cursor-pointer",
-      className
-    )}
+    className={`rounded-lg border text-card-foreground cursor-pointer relative overflow-hidden from-purple-600 to-purple-400 text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-br border-blue-400/80 hover:border-blue-400 group`}
     {...props}
   />
 ));
