@@ -59,13 +59,14 @@ export default function BlendedWorldPage() {
     const blended = [...meals1.slice(0, 3), ...meals2.slice(0, 3)];
     setBlendedMeals(blended);
 
-    // Update explored worlds
+    // Update explored worlds with combination format
     const stored = localStorage.getItem("bridgeProfile");
     const profile = stored
       ? JSON.parse(stored)
       : { favoriteFoods: [], exploredWorlds: [] };
+    const worldCombination = `${world1} / ${world2}`;
     const newExploredWorlds = Array.from(
-      new Set([...(profile.exploredWorlds || []), world1, world2])
+      new Set([...(profile.exploredWorlds || []), worldCombination])
     );
     setExploredWorlds(newExploredWorlds);
     saveToLocalStorage(profile.favoriteFoods || [], newExploredWorlds);
@@ -83,27 +84,40 @@ export default function BlendedWorldPage() {
 
   return (
     <main className="min-h-screen">
-      <div className="container mx-auto px-4 py-8">
-        <div className="mb-6">
+      <div className="container mx-auto py-8 max-w-7xl">
+        <div className="mb-6 flex justify-between items-center">
           <Link href={`/worlds/${encodeURIComponent(world1)}`}>
-            <Button variant="outline" size="sm">
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+            >
               <ArrowLeft className="w-4 h-4 mr-2" />
               Choose Different World
+            </Button>
+          </Link>
+          <Link href="/">
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-[#0f62fe] text-[#a6c8ff] hover:bg-[#0f62fe] hover:text-white hover:scale-105"
+            >
+              Back to Home
             </Button>
           </Link>
         </div>
 
         <div className="text-center mb-8">
-          <h2 className="text-4xl font-bold mb-4">
-            <span className="bg-linear-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+            <span className="bg-linear-to-r from-green-400 via-blue-500 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
               {world1}
             </span>
-            <Sparkles className="inline-block w-8 h-8 mx-4 text-purple-600" />
-            <span className="bg-linear-to-r from-purple-600 to-pink-600 bg-clip-text text-transparent">
+            <Sparkles className="inline-block w-8 h-8 mx-4 text-purple-500 animate-pulse" />
+            <span className="bg-linear-to-r from-purple-500 via-pink-500 to-red-400 bg-clip-text text-transparent animate-gradient-x">
               {world2}
             </span>
           </h2>
-          <p className="text-xl text-gray-600">
+          <p className="text-xl text-gray-300">
             Your Blended Cultural Experience
           </p>
         </div>
@@ -111,13 +125,17 @@ export default function BlendedWorldPage() {
         {loading ? (
           <div className="text-center py-20">
             <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-gray-600">Creating your unique blend...</p>
+            <p className="mt-4">Creating your unique blend...</p>
           </div>
         ) : (
           <>
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-              {blendedMeals.map((meal) => (
-                <Card key={meal.idMeal} className="overflow-hidden">
+              {blendedMeals.map((meal, index) => (
+                <Card
+                  key={meal.idMeal}
+                  className="overflow-hidden hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/5 to-pink-500/5 border-2 border-purple-400/20 hover:border-purple-400/50"
+                  style={{ animationDelay: `${index * 100}ms` }}
+                >
                   <div className="relative h-48 w-full">
                     <Image
                       src={meal.strMealThumb}
@@ -145,6 +163,7 @@ export default function BlendedWorldPage() {
                             : "outline"
                         }
                         onClick={() => toggleFavorite(meal.strMeal)}
+                        className="cursor-pointer hover:scale-110 transition-transform"
                       >
                         <Heart
                           className={`w-4 h-4 ${
@@ -192,17 +211,6 @@ export default function BlendedWorldPage() {
                   </CardContent>
                 </Card>
               ))}
-            </div>
-
-            <div className="text-center space-x-4">
-              <Link href="/worlds">
-                <Button size="lg">Explore More Worlds</Button>
-              </Link>
-              <Link href="/">
-                <Button size="lg" variant="outline">
-                  Back to Home
-                </Button>
-              </Link>
             </div>
           </>
         )}
