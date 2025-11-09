@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Dialog,
   DialogContent,
@@ -31,20 +31,37 @@ interface SearchHistoryModalProps {
   isOpen: boolean;
   onClose: () => void;
   history: SearchHistoryItem[];
+  initialSelectedItem?: SearchHistoryItem | null;
+  initialSelectedRecipe?: FusionRecipe | null;
 }
 
 export function SearchHistoryModal({
   isOpen,
   onClose,
   history,
+  initialSelectedItem = null,
+  initialSelectedRecipe = null,
 }: SearchHistoryModalProps) {
   const [selectedItem, setSelectedItem] = useState<SearchHistoryItem | null>(
-    null
+    initialSelectedItem
   );
   const [selectedRecipe, setSelectedRecipe] = useState<FusionRecipe | null>(
-    null
+    initialSelectedRecipe
   );
   const router = useRouter();
+
+  useEffect(() => {
+    if (initialSelectedItem) {
+      setSelectedItem(initialSelectedItem);
+    } else {
+      setSelectedItem(null);
+    }
+    if (initialSelectedRecipe) {
+      setSelectedRecipe(initialSelectedRecipe);
+    } else {
+      setSelectedRecipe(null);
+    }
+  }, [initialSelectedItem, initialSelectedRecipe, isOpen]);
 
   const handleViewFusion = (item: SearchHistoryItem) => {
     onClose();
@@ -57,7 +74,7 @@ export function SearchHistoryModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
-      <DialogContent className="max-w-6xl max-h-[85vh] overflow-y-auto bg-gradient-to-br from-gray-900 to-gray-800 border-gray-700">
+      <DialogContent className="max-w-6xl max-h-[85vh] overflow-y-auto bg-linear-to-br from-gray-900 to-gray-800 border-gray-700">
         {!selectedItem ? (
           // History List View
           <>

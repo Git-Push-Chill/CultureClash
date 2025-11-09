@@ -25,6 +25,12 @@ export default function Home() {
   const [step, setStep] = useState<"welcome" | "explore">("welcome");
   const [selectedWorld1, setSelectedWorld1] = useState("");
   const [selectedWorld2, setSelectedWorld2] = useState("");
+  const [filteredHistory, setFilteredHistory] = useState<SearchHistoryItem[]>(
+    []
+  );
+  const [initialSelectedItem, setInitialSelectedItem] =
+    useState<SearchHistoryItem | null>(null);
+  const [initialSelectedRecipe, setInitialSelectedRecipe] = useState<any>(null);
   const router = useRouter();
 
   useEffect(() => {
@@ -72,6 +78,39 @@ export default function Home() {
 
   const handleStartJourney = () => {
     router.push("/worlds");
+  };
+
+  const handleWorldClick = (worldCombination: string) => {
+    const filtered = searchHistory.filter(
+      (item) => `${item.world1} / ${item.world2}` === worldCombination
+    );
+    if (filtered.length > 0) {
+      setFilteredHistory(filtered);
+      setInitialSelectedItem(filtered[0]);
+      setShowHistory(true);
+    }
+  };
+
+  const handleFoodClick = (food: string) => {
+    // Find the first item that has a recipe containing this food
+    for (const item of searchHistory) {
+      if (item.fusionRecipes) {
+        const matchingRecipe = item.fusionRecipes.find(
+          (recipe) =>
+            recipe.name.toLowerCase().includes(food.toLowerCase()) ||
+            recipe.ingredients.some((ing) =>
+              ing.name.toLowerCase().includes(food.toLowerCase())
+            )
+        );
+        if (matchingRecipe) {
+          setFilteredHistory([item]);
+          setInitialSelectedItem(item);
+          setInitialSelectedRecipe(matchingRecipe);
+          setShowHistory(true);
+          return;
+        }
+      }
+    }
   };
 
   const handleDiscoverMagic = async () => {
@@ -273,8 +312,17 @@ export default function Home() {
                 <li key={world}>
                   <Badge
                     variant="default"
-                    className="text-sm px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 text-blue-100 hover:scale-110 hover:border-blue-200/70 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-blue-400/20"
+                    className="text-sm px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 text-blue-100 hover:scale-110 hover:border-blue-200/70 transition-all cursor-pointer animate-fade-in font-medium shadow-lg shadow-blue-400/20"
                     style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => handleWorldClick(world)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleWorldClick(world);
+                      }
+                    }}
                   >
                     {world}
                   </Badge>
@@ -300,8 +348,17 @@ export default function Home() {
                 <li key={food}>
                   <Badge
                     variant="default"
-                    className="text-sm px-4 py-2 bg-linear-to-r from-pink-500 to-purple-500 border-2 border-pink-300 hover:scale-110 hover:border-pink-200 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-pink-500/30"
+                    className="text-sm px-4 py-2 bg-linear-to-r from-pink-500 to-purple-500 border-2 border-pink-300 hover:scale-110 hover:border-pink-200 transition-all cursor-pointer animate-fade-in font-medium shadow-lg shadow-pink-500/30"
                     style={{ animationDelay: `${index * 100}ms` }}
+                    onClick={() => handleFoodClick(food)}
+                    role="button"
+                    tabIndex={0}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter" || e.key === " ") {
+                        e.preventDefault();
+                        handleFoodClick(food);
+                      }
+                    }}
                   >
                     {food}
                   </Badge>
@@ -322,8 +379,15 @@ export default function Home() {
         {/* Search History Modal */}
         <SearchHistoryModal
           isOpen={showHistory}
-          onClose={() => setShowHistory(false)}
-          history={searchHistory}
+          onClose={() => {
+            setShowHistory(false);
+            setFilteredHistory([]);
+            setInitialSelectedItem(null);
+            setInitialSelectedRecipe(null);
+          }}
+          history={filteredHistory.length > 0 ? filteredHistory : searchHistory}
+          initialSelectedItem={initialSelectedItem}
+          initialSelectedRecipe={initialSelectedRecipe}
         />
       </div>
     </main>
