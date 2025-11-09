@@ -246,7 +246,7 @@ export default function BlendedWorldPage() {
           className="mb-6 flex justify-between items-center"
           aria-label="Navigation"
         >
-          <Link href={`/worlds/${encodeURIComponent(world1)}`}>
+          <Link href="/worlds">
             <Button
               variant="outline"
               size="sm"

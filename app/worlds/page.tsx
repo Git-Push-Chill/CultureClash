@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,12 +11,14 @@ import {
 } from "@/components/ui/card";
 import { getAreas } from "@/lib/api/meals";
 import { useRouter } from "next/navigation";
-import { Globe, ArrowLeft } from "lucide-react";
+import { Globe, ArrowLeft, Plus, Sparkles } from "lucide-react";
 import Link from "next/link";
 
-export default function SelectFirstWorld() {
+export default function WorldFusionSelector() {
   const [areas, setAreas] = useState<string[]>([]);
   const [loading, setLoading] = useState(true);
+  const [world1, setWorld1] = useState<string>("");
+  const [world2, setWorld2] = useState<string>("");
   const router = useRouter();
 
   useEffect(() => {
@@ -29,9 +32,15 @@ export default function SelectFirstWorld() {
     setLoading(false);
   };
 
-  const handleSelectWorld = (world: string) => {
-    router.push(`/worlds/${encodeURIComponent(world)}`);
+  const handleGenerateFusion = () => {
+    if (world1 && world2) {
+      router.push(
+        `/worlds/${encodeURIComponent(world1)}/${encodeURIComponent(world2)}`
+      );
+    }
   };
+
+  const isReadyToFuse = world1 && world2 && world1 !== world2;
 
   if (loading) {
     return (
@@ -53,57 +62,162 @@ export default function SelectFirstWorld() {
     <main className="min-h-screen">
       <div className="container mx-auto px-4 py-8">
         <div className="mb-8">
-          <Link
-            href="/"
-            className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900 rounded-md px-2 py-1"
-            aria-label="Go back to home page"
-          >
-            <ArrowLeft className="w-5 h-5" aria-hidden="true" />
-            Back to Home
+          <Link href="/">
+            <Button
+              variant="outline"
+              size="sm"
+              className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
+              aria-label="Back to Home"
+            >
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
+              Back to Home
+            </Button>
           </Link>
         </div>
 
         <header className="text-center mb-12" role="banner">
           <Globe
-            className="w-16 h-16 mx-auto mb-4 text-purple-500"
+            className="w-16 h-16 mx-auto mb-4 text-purple-500 animate-pulse"
             aria-hidden="true"
           />
-          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
-            Choose Your First World
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+            Create Your Fusion
           </h1>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto">
-            Select a cuisine culture to begin your fusion journey
+            Select two cuisine cultures to blend together
           </p>
         </header>
 
-        <section
-          aria-label="Available cuisine worlds"
-          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 max-w-6xl mx-auto"
-        >
-          {areas.map((area, index) => (
-            <Card
-              key={area}
-              className="cursor-pointer transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/50 bg-linear-to-br from-purple-900/30 to-pink-900/30 border-purple-500/30 hover:border-purple-400 group animate-fade-in"
-              style={{ animationDelay: `${index * 50}ms` }}
-              onClick={() => handleSelectWorld(area)}
-              role="button"
-              tabIndex={0}
-              onKeyDown={(e) => {
-                if (e.key === "Enter" || e.key === " ") {
-                  e.preventDefault();
-                  handleSelectWorld(area);
-                }
-              }}
-              aria-label={`Select ${area} cuisine`}
-            >
-              <CardHeader>
-                <CardTitle className="text-center text-white group-hover:text-purple-300 transition-colors">
-                  {area}
-                </CardTitle>
-              </CardHeader>
-            </Card>
-          ))}
-        </section>
+        <div className="max-w-4xl mx-auto">
+          {/* Fusion Selector Card */}
+          <Card className="bg-linear-to-br from-purple-900/40 to-pink-900/40 border-purple-500/50 shadow-2xl shadow-purple-500/20 mb-8">
+            <CardHeader>
+              <CardTitle className="text-2xl text-center text-white">
+                Fusion Creator
+              </CardTitle>
+              <CardDescription className="text-center text-gray-300">
+                Choose two worlds to discover their culinary harmony
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="flex flex-col md:flex-row items-center justify-center gap-6 mb-8">
+                {/* World 1 Dropdown */}
+                <div className="w-full md:w-64">
+                  <label
+                    htmlFor="world1-select"
+                    className="block text-sm font-medium text-purple-300 mb-2"
+                  >
+                    First Cuisine
+                  </label>
+                  <select
+                    id="world1-select"
+                    value={world1}
+                    onChange={(e) => setWorld1(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400 cursor-pointer"
+                    aria-label="Select first cuisine"
+                  >
+                    <option value="" className="bg-gray-800">
+                      Select a cuisine...
+                    </option>
+                    {areas.map((area) => (
+                      <option
+                        key={area}
+                        value={area}
+                        className="bg-gray-800"
+                        disabled={area === world2}
+                      >
+                        {area}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Plus Icon */}
+                <div className="flex items-center justify-center">
+                  <div className="bg-linear-to-br from-purple-500 to-pink-500 rounded-full p-3 shadow-lg shadow-purple-500/50 animate-pulse">
+                    <Plus
+                      className="w-6 h-6 text-white"
+                      aria-hidden="true"
+                      strokeWidth={3}
+                    />
+                  </div>
+                </div>
+
+                {/* World 2 Dropdown */}
+                <div className="w-full md:w-64">
+                  <label
+                    htmlFor="world2-select"
+                    className="block text-sm font-medium text-purple-300 mb-2"
+                  >
+                    Second Cuisine
+                  </label>
+                  <select
+                    id="world2-select"
+                    value={world2}
+                    onChange={(e) => setWorld2(e.target.value)}
+                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400 cursor-pointer"
+                    aria-label="Select second cuisine"
+                  >
+                    <option value="" className="bg-gray-800">
+                      Select a cuisine...
+                    </option>
+                    {areas.map((area) => (
+                      <option
+                        key={area}
+                        value={area}
+                        className="bg-gray-800"
+                        disabled={area === world1}
+                      >
+                        {area}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+              </div>
+
+              {/* Generate Fusion Button */}
+              <div className="text-center">
+                <Button
+                  onClick={handleGenerateFusion}
+                  disabled={!isReadyToFuse}
+                  className="px-8 py-6 text-lg font-bold bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg shadow-lg shadow-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/70 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                  aria-label={
+                    isReadyToFuse
+                      ? `Generate fusion between ${world1} and ${world2}`
+                      : "Select two different cuisines to generate fusion"
+                  }
+                >
+                  <Sparkles className="w-5 h-5 mr-2" aria-hidden="true" />
+                  Generate Fusion
+                </Button>
+              </div>
+
+              {/* Selection Preview */}
+              {world1 && world2 && (
+                <div className="mt-6 text-center">
+                  <p className="text-gray-300">
+                    {world1 === world2 ? (
+                      <span className="text-yellow-400">
+                        Please select two different cuisines
+                      </span>
+                    ) : (
+                      <>
+                        Creating fusion:{" "}
+                        <span className="text-purple-400 font-semibold">
+                          {world1}
+                        </span>{" "}
+                        ×{" "}
+                        <span className="text-pink-400 font-semibold">
+                          {world2}
+                        </span>
+                      </>
+                    )}
+                  </p>
+                </div>
+              )}
+            </CardContent>
+          </Card>
+        </div>
       </div>
     </main>
   );
