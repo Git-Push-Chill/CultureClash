@@ -11,6 +11,7 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Globe, Heart, ChefHat, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { getAreas } from "../lib/api/meals";
 
 export default function Home() {
   const [favoriteFoods, setFavoriteFoods] = useState<string[]>([]);
@@ -34,6 +35,35 @@ export default function Home() {
 
   const handleStartJourney = () => {
     router.push("/worlds");
+  };
+
+  const handleDiscoverMagic = async () => {
+    try {
+      // Fetch all available areas
+      const areas = await getAreas();
+
+      if (!areas || areas.length < 2) {
+        console.error("Not enough areas to choose from");
+        return;
+      }
+
+      // Pick two distinct random areas
+      const firstIndex = Math.floor(Math.random() * areas.length);
+      let secondIndex = Math.floor(Math.random() * areas.length);
+
+      // Ensure they’re not the same
+      while (secondIndex === firstIndex) {
+        secondIndex = Math.floor(Math.random() * areas.length);
+      }
+
+      const world1 = areas[firstIndex];
+      const world2 = areas[secondIndex];
+
+      // Navigate to /worlds/{world1}/{world2}
+      router.push(`/worlds/${encodeURIComponent(world1)}/${encodeURIComponent(world2)}`);
+    } catch (error) {
+      console.error("Error discovering worlds:", error);
+    }
   };
 
   return (
@@ -114,7 +144,8 @@ export default function Home() {
             className={`text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 hover:-translate-y-2 bg-linear-to-br from-pink-500/10 to-red-500/10 border-2 border-pink-400/30 hover:border-pink-400 group ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
-            style={{ transitionDelay: "300ms" }}
+            style={{ transitionDelay: "300ms" }} 
+            onClick={handleDiscoverMagic}
           >
             <CardHeader>
               <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500 transition-transform duration-500 group-hover:scale-110 group-hover:fill-pink-500" />
