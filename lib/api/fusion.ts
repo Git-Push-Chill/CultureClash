@@ -1,27 +1,6 @@
 import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Meal, FusionRecipe } from "../types";
 
-/**
- * IMAGE GENERATION:
- * Using Hugging Face Inference API with Stable Diffusion XL (FREE!)
- *
- * Setup:
- * 1. Go to https://huggingface.co/settings/tokens
- * 2. Create a free account and generate an API token
- * 3. Add to .env.local: HUGGINGFACE_API_KEY=your_token_here
- * 4. Restart the dev server
- *
- * Features:
- * - Completely FREE (rate limited)
- * - High-quality Stable Diffusion XL model
- * - No credit card required
- * - Perfect for development and testing
- *
- * If you need more capacity later, consider upgrading to:
- * - Replicate ($0.003/image) - Best value
- * - OpenAI DALL-E 3 ($0.04/image) - Highest quality
- */
-
 // Initialize Gemini AI - will be initialized in the function to ensure env var is available
 let genAI: GoogleGenerativeAI | null = null;
 
@@ -146,10 +125,10 @@ Return the recipes in this exact JSON format:
 }
 
 /**
- * Generate a fallback flag image URL for a fusion recipe
- * Uses flagcdn.com for free, high-quality flag images
+ * Generate a diagonal-split flag fusion image URL
+ * Creates a visual representation of two countries' flags merged diagonally
  */
-function generateFlagFallback(world1: string, world2: string): string {
+function generateFlagFusion(world1: string, world2: string): string {
   // Map cuisine names to country codes
   const countryCodeMap: Record<string, string> = {
     American: "us",
@@ -186,137 +165,16 @@ function generateFlagFallback(world1: string, world2: string): string {
   const code1 = countryCodeMap[world1] || "un"; // UN flag as fallback
   const code2 = countryCodeMap[world2] || "un";
 
-  // Use the first country's flag
-  return `https://flagcdn.com/w640/${code1}.png`;
+  // Use our custom flag fusion API endpoint for diagonal split
+  return `/api/flag-fusion?country1=${code1}&country2=${code2}`;
 }
 
 /**
- * Generate an image for a fusion recipe using Hugging Face Inference API (FREE)
- *
- * @param recipeName - Name of the fusion recipe
- * @param description - Description of the dish
- * @param world1 - First cuisine name
- * @param world2 - Second cuisine name
- * @returns Base64 encoded image data URL or flag fallback URL
+ * No image generation - just return the flag fusion URL
+ * This creates a simple visual representation using country flags
  */
-async function generateFusionImage(
-  recipeName: string,
-  description: string,
-  world1: string,
-  world2: string
-): Promise<string | undefined> {
-  try {
-    const hfToken = process.env.HUGGINGFACE_API_KEY;
-
-    if (!hfToken) {
-      console.warn(
-        `⚠️  No Hugging Face API key found. Using flag fallback for: ${recipeName}`
-      );
-      return generateFlagFallback(world1, world2);
-    }
-
-    const imagePrompt = `Professional food photography of ${recipeName}, a fusion dish combining ${world1} and ${world2} cuisines. ${description}. Beautifully plated on elegant dishware, natural lighting, restaurant quality, appetizing, garnished with elements from both cultures, clean blurred background, centered composition, photorealistic, high resolution`;
-
-    console.log(`🎨 Generating FREE AI image for: ${recipeName}`);
-
-    // Using FLUX.1-schnell on Hugging Face (FREE) - New router endpoint
-    const response = await fetch(
-      "https://router.huggingface.co/wavespeed/api/v3/wavespeed-ai/flux-dev",
-      {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${hfToken}`,
-          "Content-Type": "application/json",
-          "x-use-cache": "false",
-        },
-        body: JSON.stringify({
-          inputs: imagePrompt,
-          parameters: {
-            num_inference_steps: 4,
-          },
-        }),
-      }
-    );
-
-    if (!response.ok) {
-      let error;
-      try {
-        error = await response.json();
-      } catch {
-        error = await response.text();
-      }
-
-      // Handle rate limiting gracefully
-      if (response.status === 429) {
-        console.warn(`⚠️  Rate limited by Hugging Face API for ${recipeName}`);
-        console.warn(`   Using country flag fallback image.`);
-        return generateFlagFallback(world1, world2);
-      }
-
-      console.error(
-        `❌ Hugging Face API error (${response.status}) for ${recipeName}:`,
-        error
-      );
-
-      // If model is loading, wait and retry once
-      if (error?.error?.includes("loading") || response.status === 503) {
-        console.log(`⏳ Model loading, waiting 20 seconds and retrying...`);
-        await new Promise((resolve) => setTimeout(resolve, 20000));
-
-        // Retry request
-        const retryResponse = await fetch(
-          "https://api-inference.huggingface.co/models/black-forest-labs/FLUX.1-schnell",
-          {
-            method: "POST",
-            headers: {
-              Authorization: `Bearer ${hfToken}`,
-              "Content-Type": "application/json",
-              "x-use-cache": "false",
-            },
-            body: JSON.stringify({
-              inputs: imagePrompt,
-              parameters: {
-                num_inference_steps: 4,
-              },
-            }),
-          }
-        );
-
-        if (!retryResponse.ok) {
-          console.error(`❌ Retry failed for ${recipeName}`);
-          return undefined;
-        }
-
-        const retryBlob = await retryResponse.blob();
-        const retryArrayBuffer = await retryBlob.arrayBuffer();
-        const retryBase64 = Buffer.from(retryArrayBuffer).toString("base64");
-        const retryMimeType = retryBlob.type || "image/jpeg";
-        console.log(
-          `✅ FREE AI image generated for: ${recipeName} (after retry)`
-        );
-        return `data:${retryMimeType};base64,${retryBase64}`;
-      }
-
-      // Return flag fallback for other errors
-      console.warn(`   Using country flag fallback for: ${recipeName}`);
-      return generateFlagFallback(world1, world2);
-    }
-
-    // Get the image as a blob
-    const imageBlob = await response.blob();
-
-    // Convert blob to base64
-    const arrayBuffer = await imageBlob.arrayBuffer();
-    const base64 = Buffer.from(arrayBuffer).toString("base64");
-    const mimeType = imageBlob.type || "image/jpeg";
-
-    console.log(`✅ FREE AI image generated for: ${recipeName}`);
-    return `data:${mimeType};base64,${base64}`;
-  } catch (error) {
-    console.error(`❌ Error generating image for ${recipeName}:`, error);
-    console.warn(`   Using country flag fallback for: ${recipeName}`);
-    return generateFlagFallback(world1, world2);
-  }
+function getFusionFlagImage(world1: string, world2: string): string {
+  return generateFlagFusion(world1, world2);
 }
 
 /**
@@ -380,33 +238,15 @@ export async function generateFusionRecipes(
       throw new Error("Invalid response format from AI");
     }
 
-    // Generate images for each recipe in parallel
-    // Wrap in try-catch to ensure image generation never crashes recipe generation
-    const recipesWithImages = await Promise.all(
-      fusionData.fusionRecipes.map(async (recipe: FusionRecipe) => {
-        try {
-          const imageUrl = await generateFusionImage(
-            recipe.name,
-            recipe.description,
-            world1,
-            world2
-          );
-          return {
-            ...recipe,
-            imageUrl,
-          };
-        } catch (imageError) {
-          console.error(`Error generating image for ${recipe.name}:`, imageError);
-          // Return recipe without image - will show gradient placeholder
-          return {
-            ...recipe,
-            imageUrl: generateFlagFallback(world1, world2),
-          };
-        }
-      })
-    );
+    // Add flag fusion image URL to each recipe
+    const recipesWithFlags = fusionData.fusionRecipes.map((recipe: FusionRecipe) => {
+      return {
+        ...recipe,
+        imageUrl: getFusionFlagImage(world1, world2),
+      };
+    });
 
-    return recipesWithImages;
+    return recipesWithFlags;
   } catch (error) {
     console.error("Error generating fusion recipes:", error);
     throw error;

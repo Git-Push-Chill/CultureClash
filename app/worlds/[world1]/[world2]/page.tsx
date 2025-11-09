@@ -152,6 +152,9 @@ export default function BlendedWorldPage() {
 
       const data: FusionRecipeResponse = await response.json();
       setFusionRecipes(data.fusionRecipes);
+      
+      // Save to search history with fusion recipes
+      saveSearchHistory(blendedMeals, data.fusionRecipes);
     } catch (error) {
       console.error("Error generating fusion recipes:", error);
       setFusionError(
@@ -160,6 +163,36 @@ export default function BlendedWorldPage() {
     } finally {
       setFusionLoading(false);
     }
+  };
+
+  const saveSearchHistory = (meals: Meal[], recipes: FusionRecipe[]) => {
+    const stored = localStorage.getItem("bridgeProfile");
+    const profile = stored
+      ? JSON.parse(stored)
+      : { favoriteFoods: [], exploredWorlds: [], searchHistory: [] };
+
+    const newHistoryItem = {
+      world1,
+      world2,
+      timestamp: Date.now(),
+      meals,
+      fusionRecipes: recipes,
+    };
+
+    const newHistory = [
+      newHistoryItem,
+      ...(profile.searchHistory || []).filter(
+        (item: any) => !(item.world1 === world1 && item.world2 === world2)
+      ),
+    ].slice(0, 10); // Keep only last 10 searches
+
+    localStorage.setItem(
+      "bridgeProfile",
+      JSON.stringify({
+        ...profile,
+        searchHistory: newHistory,
+      })
+    );
   };
 
   const toggleFavorite = (mealName: string) => {
@@ -259,11 +292,10 @@ export default function BlendedWorldPage() {
                   >
                     <div className="relative h-48 w-full">
                       {recipe.imageUrl ? (
-                        <Image
+                        <img
                           src={recipe.imageUrl}
                           alt={recipe.name}
-                          fill
-                          className="object-cover"
+                          className="w-full h-full object-cover"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
@@ -347,11 +379,10 @@ export default function BlendedWorldPage() {
                   {/* Hero Image */}
                   {selectedRecipe.imageUrl && (
                     <div className="relative h-64 w-full">
-                      <Image
+                      <img
                         src={selectedRecipe.imageUrl}
                         alt={selectedRecipe.name}
-                        fill
-                        className="object-cover"
+                        className="w-full h-full object-cover"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900 via-transparent to-transparent"></div>
                     </div>

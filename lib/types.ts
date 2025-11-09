@@ -35,7 +35,7 @@ export interface FusionRecipe {
   servings: number;
   prepTime: string;
   cookTime: string;
-  imageUrl?: string; // AI-generated image of the fusion dish
+  imageUrl?: string; // Diagonal-split flag fusion image
 }
 
 export interface FusionRecipeRequest {
@@ -55,6 +55,7 @@ export interface SearchHistoryItem {
   world2: string;
   timestamp: number;
   meals: Meal[];
+  fusionRecipes?: FusionRecipe[];
 }
 
 export interface BridgeProfile {

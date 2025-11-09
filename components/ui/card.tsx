@@ -77,19 +77,6 @@ const CardFooter = React.forwardRef<
 ));
 CardFooter.displayName = "CardFooter";
 
-// When rendering icons inside Card, CardHeader, CardFooter, etc.,
-// ensure you add a high-contrast color class, e.g.:
-//
-// <SomeIcon className="text-white" />
-//
-// If you pass icons as children or via props, ensure they receive `text-white` or similar.
-//
-// Example for CardHeader usage:
-// <CardHeader>
-//   <SomeIcon className="text-white" />
-//   {/* ...other content... */}
-// </CardHeader>
-
 export {
   Card,
   CardHeader,
