@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import type { Meal, SearchHistoryItem, BridgeProfile } from "@/lib/types";
 import {
   Card,
   CardContent,
@@ -11,11 +12,18 @@ import {
 import { Badge } from "@/components/ui/badge";
 import { Globe, Heart, ChefHat, Sparkles } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { SearchHistoryModal } from "@/components/ui/search-history-modal";
 
 export default function Home() {
   const [favoriteFoods, setFavoriteFoods] = useState<string[]>([]);
   const [exploredWorlds, setExploredWorlds] = useState<string[]>([]);
   const [mounted, setMounted] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+  const [searchHistory, setSearchHistory] = useState<SearchHistoryItem[]>([]);
+  const [blendedMeals, setBlendedMeals] = useState<Meal[]>([]);
+  const [step, setStep] = useState<"welcome" | "explore">("welcome");
+  const [selectedWorld1, setSelectedWorld1] = useState("");
+  const [selectedWorld2, setSelectedWorld2] = useState("");
   const router = useRouter();
 
   useEffect(() => {
@@ -26,10 +34,39 @@ export default function Home() {
   const loadFromLocalStorage = () => {
     const stored = localStorage.getItem("bridgeProfile");
     if (stored) {
-      const profile = JSON.parse(stored);
+      const profile: BridgeProfile = JSON.parse(stored);
       setFavoriteFoods(profile.favoriteFoods || []);
       setExploredWorlds(profile.exploredWorlds || []);
+      setSearchHistory(profile.searchHistory || []);
     }
+  };
+
+  const saveToLocalStorage = (
+    foods: string[],
+    worlds: string[],
+    meals?: Meal[]
+  ) => {
+    const newHistory = meals
+      ? [
+          {
+            world1: selectedWorld1,
+            world2: selectedWorld2,
+            timestamp: Date.now(),
+            meals,
+          },
+          ...searchHistory,
+        ].slice(0, 10)
+      : searchHistory;
+
+    localStorage.setItem(
+      "bridgeProfile",
+      JSON.stringify({
+        favoriteFoods: foods,
+        exploredWorlds: worlds,
+        searchHistory: newHistory,
+      })
+    );
+    setSearchHistory(newHistory);
   };
 
   const handleStartJourney = () => {
@@ -92,15 +129,16 @@ export default function Home() {
           </Card>
 
           <Card
-            className={`text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group ${
+            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "200ms" }}
+            onClick={() => setShowHistory(true)}
           >
             <CardHeader>
               <ChefHat className="w-12 h-12 mx-auto mb-4 text-yellow-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" />
               <CardTitle className="text-xl group-hover:text-yellow-300 transition-colors">
-                Explore Another
+                Explore Again
               </CardTitle>
             </CardHeader>
             <CardContent>
@@ -181,6 +219,26 @@ export default function Home() {
             </div>
           </div>
         )}
+
+        {/* New Card for Previous Adventures */}
+        <div
+          className={`max-w-4xl mx-auto mb-8 transition-all duration-700 ${
+            mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
+          }`}
+          style={{ transitionDelay: "600ms" }}
+        ></div>
+
+        {/* Search History Modal */}
+        <SearchHistoryModal
+          isOpen={showHistory}
+          onClose={() => setShowHistory(false)}
+          history={searchHistory}
+          onSelectMeals={(meals) => {
+            router.push(
+              `/results?meals=${encodeURIComponent(JSON.stringify(meals))}`
+            );
+          }}
+        />
       </div>
     </main>
   );
