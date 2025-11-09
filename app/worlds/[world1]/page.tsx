@@ -38,7 +38,10 @@ export default function SecondWorldPage() {
       <main className="min-h-screen">
         <div className="container mx-auto px-4 py-8">
           <div className="text-center py-20" role="status" aria-live="polite">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto" aria-hidden="true"></div>
+            <div
+              className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"
+              aria-hidden="true"
+            ></div>
             <p className="mt-4 text-gray-300">Loading worlds...</p>
           </div>
         </div>
@@ -49,7 +52,10 @@ export default function SecondWorldPage() {
   return (
     <main className="min-h-screen">
       <div className="container mx-auto py-8 max-w-6xl">
-        <nav className="mb-6 flex justify-between items-center" aria-label="Navigation">
+        <nav
+          className="mb-6 flex justify-between items-center"
+          aria-label="Navigation"
+        >
           <Link href="/worlds">
             <Button
               variant="outline"
@@ -82,7 +88,11 @@ export default function SecondWorldPage() {
           </p>
         </header>
 
-        <div className="text-center mb-6" role="status" aria-label="Selected home world">
+        <div
+          className="text-center mb-6"
+          role="status"
+          aria-label="Selected home world"
+        >
           <Badge
             variant="secondary"
             className="text-lg px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] shadow-lg shadow-purple-500/20"
@@ -92,21 +102,32 @@ export default function SecondWorldPage() {
           </Badge>
         </div>
 
-        <section aria-label="Available cultures to blend with" className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
+        <section
+          aria-label="Available cultures to blend with"
+          className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
+        >
           {areas
             .filter((area) => area !== world1)
             .map((area, index) => (
-              <button
+              <Card
                 key={area}
-                className="cursor-pointer hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400 rounded-lg focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                className="cursor-pointer hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400 focus-within:ring-2 focus-within:ring-purple-400 focus-within:ring-offset-2 focus-within:ring-offset-gray-900"
                 onClick={() => handleSelectWorld2(area)}
                 style={{ animationDelay: `${index * 50}ms` }}
+                role="button"
+                tabIndex={0}
+                onKeyDown={(e) => {
+                  if (e.key === "Enter" || e.key === " ") {
+                    e.preventDefault();
+                    handleSelectWorld2(area);
+                  }
+                }}
                 aria-label={`Blend ${world1} with ${area} cuisine`}
               >
-                <div className="p-6">
-                  <h2 className="text-lg text-center font-semibold">{area}</h2>
-                </div>
-              </button>
+                <CardHeader>
+                  <CardTitle className="text-lg text-center">{area}</CardTitle>
+                </CardHeader>
+              </Card>
             ))}
         </section>
       </div>

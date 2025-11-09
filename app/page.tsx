@@ -97,7 +97,9 @@ export default function Home() {
       const world2 = areas[secondIndex];
 
       // Navigate to /worlds/{world1}/{world2}
-      router.push(`/worlds/${encodeURIComponent(world1)}/${encodeURIComponent(world2)}`);
+      router.push(
+        `/worlds/${encodeURIComponent(world1)}/${encodeURIComponent(world2)}`
+      );
     } catch (error) {
       console.error("Error discovering worlds:", error);
     }
@@ -114,7 +116,10 @@ export default function Home() {
       </a>
 
       {/* Animated background gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
+      <div
+        className="absolute inset-0 overflow-hidden pointer-events-none"
+        aria-hidden="true"
+      >
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
@@ -132,11 +137,17 @@ export default function Home() {
             </h1>
           </div>
           <div className="relative inline-block">
-            <Sparkles className="absolute -top-2 -left-8 w-6 h-6 text-yellow-400 animate-bounce" aria-hidden="true" />
+            <Sparkles
+              className="absolute -top-2 -left-8 w-6 h-6 text-yellow-400 animate-bounce"
+              aria-hidden="true"
+            />
             <p className="text-2xl md:text-3xl text-white mb-4 font-semibold">
               Where Taste Bridges Worlds
             </p>
-            <Sparkles className="absolute -bottom-2 -right-8 w-6 h-6 text-yellow-400 animate-bounce delay-300" aria-hidden="true" />
+            <Sparkles
+              className="absolute -bottom-2 -right-8 w-6 h-6 text-yellow-400 animate-bounce delay-300"
+              aria-hidden="true"
+            />
           </div>
           <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mt-6">
             Discover unique cross-cultural experiences by fusing cuisines from
@@ -145,62 +156,105 @@ export default function Home() {
           </p>
         </header>
 
-        <section aria-label="Getting started guide" className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-          <button
-            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 hover:border-blue-200/70 group rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
+        <section
+          aria-label="Getting started guide"
+          className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto"
+        >
+          <Card
+            className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 hover:border-blue-200/70 group focus-within:ring-2 focus-within:ring-blue-400 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "100ms" }}
             onClick={handleStartJourney}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleStartJourney();
+              }
+            }}
             aria-label="Choose your world - Select your favorite food culture to start your journey"
           >
-            <div className="p-6">
-              <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true" />
-              <h3 className="text-xl text-blue-100 group-hover:text-blue-300 transition-colors mb-2 font-semibold">
+            <CardHeader>
+              <Globe
+                className="w-12 h-12 mx-auto mb-4 text-blue-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110"
+                aria-hidden="true"
+              />
+              <CardTitle className="text-xl text-blue-100 group-hover:text-blue-300 transition-colors text-center">
                 Choose Your World
-              </h3>
-              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
                 Select your favorite food culture to start your journey
-              </p>
-            </div>
-          </button>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
-          <button
-            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
+          <Card
+            className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group focus-within:ring-2 focus-within:ring-yellow-400 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "200ms" }}
             onClick={() => setShowHistory(true)}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                setShowHistory(true);
+              }
+            }}
             aria-label="Explore again - View your previous cuisine adventures"
           >
-            <div className="p-6">
-              <ChefHat className="w-12 h-12 mx-auto mb-4 text-yellow-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true" />
-              <h3 className="text-xl group-hover:text-yellow-300 transition-colors mb-2 font-semibold">
+            <CardHeader>
+              <ChefHat
+                className="w-12 h-12 mx-auto mb-4 text-yellow-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110"
+                aria-hidden="true"
+              />
+              <CardTitle className="text-xl group-hover:text-yellow-300 transition-colors text-center">
                 Explore Again
-              </h3>
-              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
                 Revisit your previous cuisine adventures
-              </p>
-            </div>
-          </button>
+              </CardDescription>
+            </CardContent>
+          </Card>
 
-          <div
-            className={`text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 hover:-translate-y-2 bg-linear-to-br from-pink-500/10 to-red-500/10 border-2 border-pink-400/30 hover:border-pink-400 group rounded-lg ${
+          <Card
+            className={`cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 hover:-translate-y-2 bg-linear-to-br from-pink-500/10 to-red-500/10 border-2 border-pink-400/30 hover:border-pink-400 group focus-within:ring-2 focus-within:ring-pink-400 focus-within:ring-offset-2 focus-within:ring-offset-gray-900 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
-            style={{ transitionDelay: "300ms" }} 
+            style={{ transitionDelay: "300ms" }}
             onClick={handleDiscoverMagic}
+            role="button"
+            tabIndex={0}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" || e.key === " ") {
+                e.preventDefault();
+                handleDiscoverMagic();
+              }
+            }}
+            aria-label="Discover magic - View curated dishes that blend both cultures"
           >
-            <div className="p-6">
-              <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500 transition-transform duration-500 group-hover:scale-110 group-hover:fill-pink-500" aria-hidden="true" />
-              <h3 className="text-xl group-hover:text-red-300 transition-colors mb-2 font-semibold">
+            <CardHeader>
+              <Heart
+                className="w-12 h-12 mx-auto mb-4 text-pink-500 transition-transform duration-500 group-hover:scale-110 group-hover:fill-pink-500"
+                aria-hidden="true"
+              />
+              <CardTitle className="text-xl group-hover:text-red-300 transition-colors text-center">
                 Discover Magic
-              </h3>
-              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
+              </CardTitle>
+            </CardHeader>
+            <CardContent>
+              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
                 View curated dishes that blend both cultures
-              </p>
-            </div>
-          </div>
+              </CardDescription>
+            </CardContent>
+          </Card>
         </section>
 
         {exploredWorlds.length > 0 && (
@@ -240,7 +294,10 @@ export default function Home() {
             aria-label="Your favorite dishes"
           >
             <h2 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
-              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" aria-hidden="true" />
+              <Heart
+                className="w-5 h-5 text-pink-500 fill-pink-500"
+                aria-hidden="true"
+              />
               Your Favorite Dishes
             </h2>
             <ul className="flex flex-wrap gap-3 justify-center" role="list">
