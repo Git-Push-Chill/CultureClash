@@ -243,11 +243,6 @@ export default function Home() {
           isOpen={showHistory}
           onClose={() => setShowHistory(false)}
           history={searchHistory}
-          onSelectMeals={(meals) => {
-            router.push(
-              `/results?meals=${encodeURIComponent(JSON.stringify(meals))}`
-            );
-          }}
         />
       </div>
     </main>

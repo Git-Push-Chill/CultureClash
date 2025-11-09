@@ -12,7 +12,11 @@ const nextConfig: NextConfig = {
         hostname: "flagcdn.com",
       },
     ],
-    // Allow base64 data URLs for AI-generated images
+    localPatterns: [
+      {
+        pathname: "/api/flag-fusion**",
+      },
+    ],
     dangerouslyAllowSVG: true,
     unoptimized: false,
   },
