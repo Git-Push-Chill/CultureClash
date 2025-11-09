@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -41,6 +41,8 @@ export default function BlendedWorldPage() {
   const [selectedRecipe, setSelectedRecipe] = useState<FusionRecipe | null>(
     null
   );
+  const modalRef = useRef<HTMLDivElement>(null);
+  const closeButtonRef = useRef<HTMLButtonElement>(null);
   const params = useParams();
   const router = useRouter();
   const world1 = decodeURIComponent(params.world1 as string);
@@ -50,6 +52,31 @@ export default function BlendedWorldPage() {
     loadFromLocalStorage();
     loadBlendedMealsAndFusion();
   }, []);
+
+  // Handle modal focus and escape key
+  useEffect(() => {
+    if (selectedRecipe) {
+      // Focus the close button when modal opens
+      closeButtonRef.current?.focus();
+      
+      // Prevent body scroll
+      document.body.style.overflow = 'hidden';
+      
+      // Handle escape key
+      const handleEscape = (e: KeyboardEvent) => {
+        if (e.key === 'Escape') {
+          setSelectedRecipe(null);
+        }
+      };
+      
+      document.addEventListener('keydown', handleEscape);
+      
+      return () => {
+        document.body.style.overflow = 'unset';
+        document.removeEventListener('keydown', handleEscape);
+      };
+    }
+  }, [selectedRecipe]);
 
   const loadFromLocalStorage = () => {
     const stored = localStorage.getItem("bridgeProfile");
@@ -152,6 +179,9 @@ export default function BlendedWorldPage() {
 
       const data: FusionRecipeResponse = await response.json();
       setFusionRecipes(data.fusionRecipes);
+
+      // Save to search history with fusion recipes
+      saveSearchHistory(blendedMeals, data.fusionRecipes);
     } catch (error) {
       console.error("Error generating fusion recipes:", error);
       setFusionError(
@@ -160,6 +190,36 @@ export default function BlendedWorldPage() {
     } finally {
       setFusionLoading(false);
     }
+  };
+
+  const saveSearchHistory = (meals: Meal[], recipes: FusionRecipe[]) => {
+    const stored = localStorage.getItem("bridgeProfile");
+    const profile = stored
+      ? JSON.parse(stored)
+      : { favoriteFoods: [], exploredWorlds: [], searchHistory: [] };
+
+    const newHistoryItem = {
+      world1,
+      world2,
+      timestamp: Date.now(),
+      meals,
+      fusionRecipes: recipes,
+    };
+
+    const newHistory = [
+      newHistoryItem,
+      ...(profile.searchHistory || []).filter(
+        (item: any) => !(item.world1 === world1 && item.world2 === world2)
+      ),
+    ].slice(0, 10); // Keep only last 10 searches
+
+    localStorage.setItem(
+      "bridgeProfile",
+      JSON.stringify({
+        ...profile,
+        searchHistory: newHistory,
+      })
+    );
   };
 
   const toggleFavorite = (mealName: string) => {
@@ -173,14 +233,15 @@ export default function BlendedWorldPage() {
   return (
     <main className="min-h-screen">
       <div className="container mx-auto py-8 max-w-7xl">
-        <div className="mb-6 flex justify-between items-center">
+        <nav className="mb-6 flex justify-between items-center" aria-label="Navigation">
           <Link href={`/worlds/${encodeURIComponent(world1)}`}>
             <Button
               variant="outline"
               size="sm"
               className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
+              aria-label="Choose different worlds"
             >
-              <ArrowLeft className="w-4 h-4 mr-2" />
+              <ArrowLeft className="w-4 h-4 mr-2" aria-hidden="true" />
               Choose Different Worlds
             </Button>
           </Link>
@@ -189,31 +250,32 @@ export default function BlendedWorldPage() {
               variant="outline"
               size="sm"
               className="cursor-pointer transition-all duration-300 font-bold border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50"
+              aria-label="Back to Home"
             >
               Back to Home
             </Button>
           </Link>
-        </div>
+        </nav>
 
-        <div className="text-center mb-8">
-          <h2 className="text-4xl md:text-5xl font-bold mb-4">
+        <header className="text-center mb-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4">
             <span className="bg-linear-to-r from-green-400 via-blue-500 to-purple-500 bg-clip-text text-transparent animate-gradient-x">
               {world1}
             </span>
-            <Sparkles className="inline-block w-8 h-8 mx-4 text-purple-500 animate-pulse" />
+            <Sparkles className="inline-block w-8 h-8 mx-4 text-purple-500 animate-pulse" aria-hidden="true" />
             <span className="bg-linear-to-r from-purple-500 via-pink-500 to-red-400 bg-clip-text text-transparent animate-gradient-x">
               {world2}
             </span>
-          </h2>
+          </h1>
           <p className="text-xl text-gray-300">
             Your Blended Cultural Experience
           </p>
-        </div>
+        </header>
 
         {loading || fusionLoading ? (
-          <div className="text-center py-20">
-            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"></div>
-            <p className="mt-4 text-lg">
+          <div className="text-center py-20" role="status" aria-live="polite">
+            <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto" aria-hidden="true"></div>
+            <p className="mt-4 text-lg text-gray-300">
               {loading
                 ? "Creating your unique blend..."
                 : "Our AI chef is creating fusion masterpieces..."}
@@ -228,7 +290,7 @@ export default function BlendedWorldPage() {
               <p className="text-gray-300 mb-4">{fusionError}</p>
               <Button
                 onClick={() => generateFusionRecipes()}
-                className="bg-gradient-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
+                className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
               >
                 Try Again
               </Button>
@@ -237,33 +299,42 @@ export default function BlendedWorldPage() {
         ) : (
           <>
             {/* Fusion Recipes Section */}
-            <div className="mb-8">
-              <div className="text-center mb-8">
-                <h3 className="text-3xl font-bold mb-2">
-                  <span className="bg-gradient-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
+            <section className="mb-8" aria-label="AI-Generated fusion recipes">
+              <header className="text-center mb-8">
+                <h2 className="text-3xl font-bold mb-2">
+                  <span className="bg-linear-to-r from-purple-400 via-pink-400 to-red-400 bg-clip-text text-transparent">
                     AI-Generated Fusion Recipes ✨
                   </span>
-                </h3>
+                </h2>
                 <p className="text-gray-300">
                   Unique dishes that blend the best of both worlds
                 </p>
-              </div>
+              </header>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
                 {fusionRecipes.map((recipe, index) => (
-                  <Card
+                  <article
                     key={index}
-                    onClick={() => setSelectedRecipe(recipe)}
-                    className="overflow-hidden cursor-pointer hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-gradient-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400/60"
+                    className="overflow-hidden hover:shadow-2xl hover:shadow-purple-500/50 transition-all duration-500 hover:scale-105 hover:-translate-y-2 animate-fade-in bg-linear-to-br from-purple-500/10 to-pink-500/10 border-2 border-purple-400/30 hover:border-purple-400/60 rounded-lg"
                     style={{ animationDelay: `${index * 100}ms` }}
                   >
-                    <div className="relative h-48 w-full bg-gradient-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
-                      <div className="text-center p-4">
-                        <Sparkles className="w-12 h-12 mx-auto mb-2 text-yellow-400 animate-pulse" />
-                        <p className="text-white font-bold text-lg">
-                          Fusion Recipe
-                        </p>
-                      </div>
+                    <div className="relative h-48 w-full">
+                      {recipe.imageUrl ? (
+                        <img
+                          src={recipe.imageUrl}
+                          alt={recipe.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <div className="w-full h-full bg-linear-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
+                          <div className="text-center p-4">
+                            <Sparkles className="w-12 h-12 mx-auto mb-2 text-yellow-400 animate-pulse" aria-hidden="true" />
+                            <p className="text-white font-bold text-lg">
+                              Fusion Recipe
+                            </p>
+                          </div>
+                        </div>
+                      )}
                       <Button
                         size="sm"
                         variant="ghost"
@@ -271,7 +342,13 @@ export default function BlendedWorldPage() {
                           e.stopPropagation();
                           toggleFavorite(recipe.name);
                         }}
-                        className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform bg-black/50 hover:bg-black/70 border-0"
+                        className="absolute top-2 right-2 cursor-pointer hover:scale-110 transition-transform bg-black/50 hover:bg-black/70 border-0 z-10"
+                        aria-label={
+                          favoriteFoods.includes(recipe.name)
+                            ? `Remove ${recipe.name} from favorites`
+                            : `Add ${recipe.name} to favorites`
+                        }
+                        aria-pressed={favoriteFoods.includes(recipe.name)}
                       >
                         <Heart
                           className={`w-5 h-5 ${
@@ -279,6 +356,7 @@ export default function BlendedWorldPage() {
                               ? "fill-red-500 text-red-500"
                               : "text-white"
                           }`}
+                          aria-hidden="true"
                         />
                       </Button>
                       <div className="absolute top-2 left-2 flex flex-col gap-1">
@@ -299,13 +377,13 @@ export default function BlendedWorldPage() {
                     <CardContent>
                       <div className="space-y-3">
                         <div className="flex items-center gap-2 text-sm text-gray-300">
-                          <Clock className="w-4 h-4 text-blue-400" />
+                          <Clock className="w-4 h-4 text-blue-400" aria-hidden="true" />
                           <span>
                             {recipe.prepTime} prep + {recipe.cookTime} cook
                           </span>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-gray-300">
-                          <Users className="w-4 h-4 text-purple-400" />
+                          <Users className="w-4 h-4 text-purple-400" aria-hidden="true" />
                           <span>{recipe.servings} servings</span>
                         </div>
                         <div className="pt-2">
@@ -318,24 +396,48 @@ export default function BlendedWorldPage() {
                         </div>
                       </div>
                     </CardContent>
-                  </Card>
+                    <button
+                      onClick={() => setSelectedRecipe(recipe)}
+                      className="absolute inset-0 w-full h-full cursor-pointer focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-inset rounded-lg"
+                      aria-label={`View full recipe for ${recipe.name}`}
+                    >
+                      <span className="sr-only">View full recipe for {recipe.name}</span>
+                    </button>
+                  </article>
                 ))}
               </div>
-            </div>
+            </section>
 
             {/* Recipe Modal */}
             {selectedRecipe && (
               <div
                 className="fixed inset-0 bg-black/80 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-fade-in"
                 onClick={() => setSelectedRecipe(null)}
+                role="dialog"
+                aria-modal="true"
+                aria-labelledby="recipe-title"
+                ref={modalRef}
               >
                 <div
                   className="bg-gray-900 rounded-lg max-w-4xl w-full max-h-[90vh] overflow-y-auto border-2 border-purple-400/50 shadow-2xl shadow-purple-500/50"
                   onClick={(e) => e.stopPropagation()}
                 >
-                  <div className="sticky top-0 bg-gradient-to-r from-purple-600/90 to-pink-600/90 backdrop-blur-sm border-b border-purple-400/30 p-6 flex justify-between items-start z-10">
+                  {/* Hero Image */}
+                  {selectedRecipe.imageUrl && (
+                    <div className="relative h-64 w-full">
+                      <img
+                        src={selectedRecipe.imageUrl}
+                        alt={`${selectedRecipe.name} - fusion dish`}
+                        fill
+                        className="object-cover"
+                      />
+                      <div className="absolute inset-0 bg-linear-to-t from-gray-900 via-transparent to-transparent" aria-hidden="true"></div>
+                    </div>
+                  )}
+
+                  <div className="sticky top-0 bg-linear-to-r from-purple-600/90 to-pink-600/90 backdrop-blur-sm border-b border-purple-400/30 p-6 flex justify-between items-start z-10">
                     <div className="flex-1">
-                      <h2 className="text-3xl font-bold text-white mb-2">
+                      <h2 id="recipe-title" className="text-3xl font-bold text-white mb-2">
                         {selectedRecipe.name}
                       </h2>
                       <p className="text-gray-200">
@@ -351,10 +453,12 @@ export default function BlendedWorldPage() {
                       </div>
                     </div>
                     <Button
+                      ref={closeButtonRef}
                       variant="ghost"
                       size="sm"
                       onClick={() => setSelectedRecipe(null)}
                       className="text-white hover:bg-white/20"
+                      aria-label="Close recipe dialog"
                     >
                       ✕
                     </Button>
@@ -362,36 +466,39 @@ export default function BlendedWorldPage() {
 
                   <div className="p-6">
                     {/* Recipe Info */}
-                    <div className="flex flex-wrap gap-4 mb-6 pb-6 border-b border-purple-400/20">
+                    <dl className="flex flex-wrap gap-4 mb-6 pb-6 border-b border-purple-400/20">
                       <div className="flex items-center gap-2 text-gray-300">
-                        <Users className="w-5 h-5 text-purple-400" />
-                        <span>
+                        <Users className="w-5 h-5 text-purple-400" aria-hidden="true" />
+                        <dt className="sr-only">Servings:</dt>
+                        <dd>
                           <strong>{selectedRecipe.servings}</strong> servings
-                        </span>
+                        </dd>
                       </div>
                       <div className="flex items-center gap-2 text-gray-300">
-                        <Clock className="w-5 h-5 text-blue-400" />
-                        <span>
+                        <Clock className="w-5 h-5 text-blue-400" aria-hidden="true" />
+                        <dt className="sr-only">Prep time:</dt>
+                        <dd>
                           Prep: <strong>{selectedRecipe.prepTime}</strong>
-                        </span>
+                        </dd>
                       </div>
                       <div className="flex items-center gap-2 text-gray-300">
-                        <Flame className="w-5 h-5 text-orange-400" />
-                        <span>
+                        <Flame className="w-5 h-5 text-orange-400" aria-hidden="true" />
+                        <dt className="sr-only">Cook time:</dt>
+                        <dd>
                           Cook: <strong>{selectedRecipe.cookTime}</strong>
-                        </span>
+                        </dd>
                       </div>
-                    </div>
+                    </dl>
 
                     {/* Ingredients */}
-                    <div className="mb-6">
-                      <h4 className="text-xl font-bold mb-3 text-white flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-purple-400" />
+                    <section className="mb-6" aria-labelledby="ingredients-heading">
+                      <h3 id="ingredients-heading" className="text-xl font-bold mb-3 text-white flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-purple-400" aria-hidden="true" />
                         Ingredients
-                      </h4>
-                      <div className="grid md:grid-cols-2 gap-3">
+                      </h3>
+                      <ul className="grid md:grid-cols-2 gap-3" role="list">
                         {selectedRecipe.ingredients.map((ingredient, idx) => (
-                          <div
+                          <li
                             key={idx}
                             className={`flex items-center gap-2 p-3 rounded-lg ${
                               ingredient.origin === "world1"
@@ -407,39 +514,39 @@ export default function BlendedWorldPage() {
                               </strong>{" "}
                               {ingredient.name}
                             </span>
-                          </div>
+                          </li>
                         ))}
-                      </div>
-                    </div>
+                      </ul>
+                    </section>
 
                     {/* Instructions */}
-                    <div className="mb-6">
-                      <h4 className="text-xl font-bold mb-3 text-white flex items-center gap-2">
-                        <ChefHat className="w-5 h-5 text-pink-400" />
+                    <section className="mb-6" aria-labelledby="instructions-heading">
+                      <h3 id="instructions-heading" className="text-xl font-bold mb-3 text-white flex items-center gap-2">
+                        <ChefHat className="w-5 h-5 text-pink-400" aria-hidden="true" />
                         Instructions
-                      </h4>
-                      <ol className="space-y-3">
+                      </h3>
+                      <ol className="space-y-3" role="list">
                         {selectedRecipe.instructions.map((instruction, idx) => (
                           <li key={idx} className="flex gap-3 text-gray-300">
-                            <span className="flex-shrink-0 w-8 h-8 rounded-full bg-gradient-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white">
+                            <span className="shrink-0 w-8 h-8 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white" aria-hidden="true">
                               {idx + 1}
                             </span>
                             <span className="flex-1 pt-1">{instruction}</span>
                           </li>
                         ))}
                       </ol>
-                    </div>
+                    </section>
 
                     {/* Cultural Notes */}
-                    <div className="bg-gradient-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-400/30">
-                      <h4 className="text-lg font-bold mb-2 text-white flex items-center gap-2">
-                        <Sparkles className="w-5 h-5 text-yellow-400" />
+                    <aside className="bg-linear-to-r from-purple-500/10 to-pink-500/10 rounded-lg p-4 border border-purple-400/30" aria-labelledby="cultural-notes-heading">
+                      <h3 id="cultural-notes-heading" className="text-lg font-bold mb-2 text-white flex items-center gap-2">
+                        <Sparkles className="w-5 h-5 text-yellow-400" aria-hidden="true" />
                         Cultural Fusion Notes
-                      </h4>
+                      </h3>
                       <p className="text-gray-300 leading-relaxed">
                         {selectedRecipe.culturalNotes}
                       </p>
-                    </div>
+                    </aside>
                   </div>
                 </div>
               </div>

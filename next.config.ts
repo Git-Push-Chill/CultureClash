@@ -7,7 +7,18 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "www.themealdb.com",
       },
+      {
+        protocol: "https",
+        hostname: "flagcdn.com",
+      },
     ],
+    localPatterns: [
+      {
+        pathname: "/api/flag-fusion**",
+      },
+    ],
+    dangerouslyAllowSVG: true,
+    unoptimized: false,
   },
 };
 
