@@ -65,16 +65,16 @@ export function SearchHistoryModal({
               <DialogTitle className="text-3xl font-bold text-white">
                 🌍 Previous Culinary Adventures
               </DialogTitle>
-              <p className=" mt-2">
+              <p className="text-white mt-2">
                 Revisit your flavor fusions from around the world
               </p>
             </DialogHeader>
-            <div className="grid gap-4 mt-6">
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
               {history.length === 0 ? (
-                <div className="text-center py-12">
-                  <Globe className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                  <p className="text-gray-400 text-lg">No adventures yet!</p>
-                  <p className="text-gray-500 mt-2">
+                <div className="col-span-full text-center py-12">
+                  <Globe className="w-16 h-16 mx-auto mb-4 text-white" />
+                  <p className="text-white text-lg">No adventures yet!</p>
+                  <p className="text-white mt-2">
                     Start exploring to create your fusion history
                   </p>
                 </div>
@@ -85,72 +85,31 @@ export function SearchHistoryModal({
                     className="cursor-pointer hover:shadow-xl hover:shadow-purple-500/30 transition-all bg-gray-800/50 border-gray-700 hover:border-purple-500/50 hover:scale-[1.02]"
                     onClick={() => setSelectedItem(item)}
                   >
-                    <CardHeader>
-                      <div className="flex justify-between items-start">
-                        <div className="flex items-center gap-3 text-white flex-1">
-                          <Globe className="w-5 h-5 text-purple-400" />
-                          <div>
-                            <div className="flex items-center gap-2 text-xl font-bold">
-                              <span className="text-green-400">
-                                {item.world1}
-                              </span>
-                              <span className="text-purple-400">×</span>
-                              <span className="text-blue-400">
-                                {item.world2}
-                              </span>
-                            </div>
-                            <p className="text-sm text-gray-400 mt-1">
-                              {item.fusionRecipes?.length || 0} fusion recipes
-                              created
-                            </p>
-                          </div>
-                        </div>
-                        <Badge
-                          variant="secondary"
-                          className="bg-purple-500/20 text-purple-300 border-purple-500/30"
-                        >
-                          <Clock className="w-3 h-3 mr-1" />
-                          {new Date(item.timestamp).toLocaleDateString()}
-                        </Badge>
+                    <CardContent className="p-4">
+                      {/* Country Flags */}
+                      <div className="flex items-center justify-center gap-2 mb-3">
+                        <span className="text-4xl">{item.world1}</span>
+                        <Sparkles className="w-5 h-5 text-purple-400" />
+                        <span className="text-4xl">{item.world2}</span>
                       </div>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="flex gap-2 overflow-x-auto pb-2">
-                        {item.fusionRecipes && item.fusionRecipes.length > 0 ? (
-                          item.fusionRecipes.slice(0, 4).map((recipe, idx) => (
-                            <div
-                              key={idx}
-                              className="relative h-20 w-20 shrink-0 rounded-lg overflow-hidden border-2 border-purple-500/30"
-                            >
-                              {recipe.imageUrl ? (
-                                <Image
-                                  src={recipe.imageUrl}
-                                  alt={recipe.name}
-                                  fill
-                                  className="object-cover"
-                                />
-                              ) : (
-                                <div className="w-full h-full bg-linear-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
-                                  <ChefHat className="w-8 h-8 text-purple-300" />
-                                </div>
-                              )}
-                            </div>
-                          ))
+
+                      {/* Single Fusion Image */}
+                      <div className="relative h-32 w-full rounded-lg overflow-hidden border-2 border-purple-500/30">
+                        {item.fusionRecipes &&
+                        item.fusionRecipes.length > 0 &&
+                        item.fusionRecipes[0].imageUrl ? (
+                          <Image
+                            src={item.fusionRecipes[0].imageUrl}
+                            alt={item.fusionRecipes[0].name}
+                            fill
+                            className="object-cover"
+                          />
                         ) : (
-                          <p className="text-gray-500 text-sm">
-                            No recipes generated yet
-                          </p>
+                          <div className="w-full h-full bg-linear-to-br from-purple-600/30 via-pink-600/30 to-orange-600/30 flex items-center justify-center">
+                            <ChefHat className="w-12 h-12 text-purple-300" />
+                          </div>
                         )}
                       </div>
-                      <Button
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          handleViewFusion(item);
-                        }}
-                        className="w-full mt-4 bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
-                      >
-                        View This Fusion
-                      </Button>
                     </CardContent>
                   </Card>
                 ))
@@ -169,22 +128,17 @@ export function SearchHistoryModal({
                     setSelectedRecipe(null);
                     setSelectedItem(null);
                   }}
-                  className=" hover:text-white hover:bg-gray-800"
+                  className="text-white hover:text-white hover:bg-gray-800"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to History
                 </Button>
               </div>
               <DialogTitle className="text-3xl font-bold text-white mt-4">
-                <span className="text-green-400">{selectedItem.world1}</span>
-                <span className="text-purple-400 mx-2">×</span>
-                <span className="text-blue-400">{selectedItem.world2}</span>
+                <span className="text-white">{selectedItem.world1}</span>
+                <Sparkles className="inline-block w-6 h-6 mx-2 text-purple-400" />
+                <span className="text-white">{selectedItem.world2}</span>
               </DialogTitle>
-              <p className=" mt-2">
-                <Clock className="w-4 h-4 inline mr-2" />
-                {new Date(selectedItem.timestamp).toLocaleDateString()} at{" "}
-                {new Date(selectedItem.timestamp).toLocaleTimeString()}
-              </p>
             </DialogHeader>
 
             {selectedRecipe ? (
@@ -194,7 +148,7 @@ export function SearchHistoryModal({
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedRecipe(null)}
-                  className="mb-4  hover:text-white hover:bg-gray-800"
+                  className="mb-4 text-white hover:text-white hover:bg-gray-800"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Recipes
@@ -216,7 +170,9 @@ export function SearchHistoryModal({
                   <h3 className="text-2xl font-bold text-white mb-2">
                     {selectedRecipe.name}
                   </h3>
-                  <p className=" mb-4">{selectedRecipe.description}</p>
+                  <p className="text-white mb-4">
+                    {selectedRecipe.description}
+                  </p>
 
                   <div className="flex gap-2 mb-4">
                     <Badge className="bg-green-500/30 text-green-200 border-green-500/50">
@@ -229,19 +185,19 @@ export function SearchHistoryModal({
 
                   {/* Recipe Info */}
                   <div className="flex flex-wrap gap-4 mb-6 pb-4 border-b border-gray-700">
-                    <div className="flex items-center gap-2 ">
+                    <div className="flex items-center gap-2 text-white">
                       <Users className="w-5 h-5 text-purple-400" />
                       <span>
                         <strong>{selectedRecipe.servings}</strong> servings
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 ">
+                    <div className="flex items-center gap-2 text-white">
                       <Clock className="w-5 h-5 text-blue-400" />
                       <span>
                         Prep: <strong>{selectedRecipe.prepTime}</strong>
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 ">
+                    <div className="flex items-center gap-2 text-white">
                       <Flame className="w-5 h-5 text-orange-400" />
                       <span>
                         Cook: <strong>{selectedRecipe.cookTime}</strong>
@@ -267,7 +223,7 @@ export function SearchHistoryModal({
                               : "bg-purple-500/10 border border-purple-500/30"
                           }`}
                         >
-                          <span className="">
+                          <span className="text-white">
                             <strong className="text-white">
                               {ingredient.amount}
                             </strong>{" "}
@@ -286,7 +242,7 @@ export function SearchHistoryModal({
                     </h4>
                     <ol className="space-y-2">
                       {selectedRecipe.instructions.map((instruction, idx) => (
-                        <li key={idx} className="flex gap-3  text-sm">
+                        <li key={idx} className="flex gap-3 text-white text-sm">
                           <span className="shrink-0 w-6 h-6 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white text-xs">
                             {idx + 1}
                           </span>
@@ -302,7 +258,7 @@ export function SearchHistoryModal({
                       <Sparkles className="w-5 h-5 text-yellow-400" />
                       Cultural Fusion Notes
                     </h4>
-                    <p className=" text-sm leading-relaxed">
+                    <p className="text-white text-sm leading-relaxed">
                       {selectedRecipe.culturalNotes}
                     </p>
                   </div>
@@ -337,19 +293,19 @@ export function SearchHistoryModal({
                         <CardTitle className="text-lg text-white">
                           {recipe.name}
                         </CardTitle>
-                        <CardDescription className="line-clamp-2 text-gray-400">
+                        <CardDescription className="line-clamp-2">
                           {recipe.description}
                         </CardDescription>
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2 ">
+                          <div className="flex items-center gap-2 text-white">
                             <Clock className="w-4 h-4 text-blue-400" />
                             <span>
                               {recipe.prepTime} + {recipe.cookTime}
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 ">
+                          <div className="flex items-center gap-2 text-white">
                             <Users className="w-4 h-4 text-purple-400" />
                             <span>{recipe.servings} servings</span>
                           </div>
@@ -359,8 +315,8 @@ export function SearchHistoryModal({
                   ))
                 ) : (
                   <div className="col-span-full text-center py-12">
-                    <ChefHat className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                    <p className="text-gray-400">
+                    <ChefHat className="w-16 h-16 mx-auto mb-4 text-white" />
+                    <p className="text-white">
                       No fusion recipes available for this combination
                     </p>
                   </div>

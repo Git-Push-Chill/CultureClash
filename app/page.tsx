@@ -149,7 +149,7 @@ export default function Home() {
               aria-hidden="true"
             />
           </div>
-          <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mt-6">
+          <p className="text-lg  max-w-2xl mx-auto leading-relaxed mt-6">
             Discover unique cross-cultural experiences by fusing cuisines from
             different worlds. Choose your favorite culture and explore another
             to create something extraordinary.
@@ -186,7 +186,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover: transition-colors text-center">
                 Select your favorite food culture to start your journey
               </CardDescription>
             </CardContent>
@@ -218,7 +218,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover: transition-colors text-center">
                 Revisit your previous cuisine adventures
               </CardDescription>
             </CardContent>
@@ -250,7 +250,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover: transition-colors text-center">
                 View curated dishes that blend both cultures
               </CardDescription>
             </CardContent>
@@ -266,7 +266,6 @@ export default function Home() {
             aria-label="Your explored worlds"
           >
             <h2 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
-              <Globe className="w-5 h-5 text-blue-400" aria-hidden="true" />
               Your Journey So Far
             </h2>
             <ul className="flex flex-wrap gap-3 justify-center" role="list">
@@ -294,10 +293,6 @@ export default function Home() {
             aria-label="Your favorite dishes"
           >
             <h2 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
-              <Heart
-                className="w-5 h-5 text-pink-500 fill-pink-500"
-                aria-hidden="true"
-              />
               Your Favorite Dishes
             </h2>
             <ul className="flex flex-wrap gap-3 justify-center" role="list">

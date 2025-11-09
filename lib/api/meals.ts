@@ -1,6 +1,13 @@
 import { Meal } from "../types";
+import {
+  cachedFetch,
+  generateCacheKey,
+  getFromCache,
+  saveToCache,
+} from "../apiCache";
 
 const BASE_URL = "https://www.themealdb.com/api/json/v1/1";
+const CACHE_TTL = 60 * 60 * 1000; // 1 hour for meal data
 
 // Mock meals for fallback when API is unavailable
 const mockMealsByArea: Record<string, Meal[]> = {
@@ -10,8 +17,10 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strMeal: "Spicy Arrabiata Penne",
       strCategory: "Vegetarian",
       strArea: "Italian",
-      strInstructions: "Bring a large pot of water to a boil. Add kosher salt and pasta...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
+      strInstructions:
+        "Bring a large pot of water to a boil. Add kosher salt and pasta...",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/ustsqw1468250014.jpg",
       strTags: "Pasta,Curry",
       strIngredient1: "penne rigate",
       strIngredient2: "olive oil",
@@ -26,7 +35,8 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strCategory: "Chicken",
       strArea: "Italian",
       strInstructions: "Preheat oven to 350° F...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/wvpsxx1468256321.jpg",
       strTags: "Meat,Casserole",
       strIngredient1: "soy sauce",
       strIngredient2: "water",
@@ -41,7 +51,8 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strCategory: "Pasta",
       strArea: "Italian",
       strInstructions: "Heat the oil in a large saucepan...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/wtsvxx1511296896.jpg",
       strTags: "Pasta,Beef",
       strIngredient1: "olive oil",
       strIngredient2: "bacon",
@@ -58,7 +69,8 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strCategory: "Chicken",
       strArea: "Japanese",
       strInstructions: "Combine the flour and curry powder...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/vwrpps1503068729.jpg",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/vwrpps1503068729.jpg",
       strTags: "Curry,Meat",
       strIngredient1: "chicken breast",
       strIngredient2: "plain flour",
@@ -73,7 +85,8 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strCategory: "Chicken",
       strArea: "Japanese",
       strInstructions: "Mix all the ingredients in the teriyaki sauce...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/g5srio1604444674.jpg",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/g5srio1604444674.jpg",
       strTags: "Meat,Chicken",
       strIngredient1: "chicken thighs",
       strIngredient2: "sake",
@@ -88,7 +101,8 @@ const mockMealsByArea: Record<string, Meal[]> = {
       strCategory: "Seafood",
       strArea: "Japanese",
       strInstructions: "Cook the sushi rice...",
-      strMealThumb: "https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg",
+      strMealThumb:
+        "https://www.themealdb.com/images/media/meals/g046bb1663960946.jpg",
       strTags: "Seafood,Fish",
       strIngredient1: "sushi rice",
       strIngredient2: "rice wine",
@@ -101,22 +115,38 @@ const mockMealsByArea: Record<string, Meal[]> = {
 };
 
 export async function getMealsByArea(area: string): Promise<Meal[]> {
+  // Check cache first
+  const cacheKey = generateCacheKey("meals-by-area", { area });
+  const cached = getFromCache<Meal[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   try {
     const response = await fetch(`${BASE_URL}/filter.php?a=${area}`);
     const data = await response.json();
-    
-    if (!data.meals) return mockMealsByArea[area] || [];
-    
+
+    if (!data.meals) {
+      return mockMealsByArea[area] || [];
+    }
+
     // Get full details for each meal
     const detailedMeals = await Promise.all(
       data.meals.slice(0, 6).map(async (meal: { idMeal: string }) => {
-        const detailResponse = await fetch(`${BASE_URL}/lookup.php?i=${meal.idMeal}`);
+        const detailResponse = await fetch(
+          `${BASE_URL}/lookup.php?i=${meal.idMeal}`
+        );
         const detailData = await detailResponse.json();
         return detailData.meals?.[0] || null;
       })
     );
-    
-    return detailedMeals.filter(Boolean);
+
+    const results = detailedMeals.filter(Boolean);
+
+    // Cache the results
+    saveToCache(cacheKey, results, CACHE_TTL);
+
+    return results;
   } catch (error) {
     console.error("Error fetching meals:", error);
     // Return mock data if API fails
@@ -147,20 +177,60 @@ export async function searchMealsByName(name: string): Promise<Meal[]> {
 }
 
 export async function getAreas(): Promise<string[]> {
+  // Check cache first
+  const cacheKey = generateCacheKey("areas");
+  const cached = getFromCache<string[]>(cacheKey);
+  if (cached) {
+    return cached;
+  }
+
   try {
     const response = await fetch(`${BASE_URL}/list.php?a=list`);
     const data = await response.json();
-    return data.meals?.map((m: { strArea: string }) => m.strArea) || [];
+    const areas = data.meals?.map((m: { strArea: string }) => m.strArea) || [];
+
+    // Cache for longer period since areas don't change often
+    saveToCache(cacheKey, areas, 24 * 60 * 60 * 1000); // 24 hours
+
+    return areas;
   } catch (error) {
     console.error("Error fetching areas:", error);
     // Fallback to hardcoded areas if API fails
-    return [
-      "American", "British", "Canadian", "Chinese", "Croatian", "Dutch",
-      "Egyptian", "Filipino", "French", "Greek", "Indian", "Irish",
-      "Italian", "Jamaican", "Japanese", "Kenyan", "Malaysian", "Mexican",
-      "Moroccan", "Polish", "Portuguese", "Russian", "Spanish", "Thai",
-      "Tunisian", "Turkish", "Ukrainian", "Vietnamese"
+    const fallbackAreas = [
+      "American",
+      "British",
+      "Canadian",
+      "Chinese",
+      "Croatian",
+      "Dutch",
+      "Egyptian",
+      "Filipino",
+      "French",
+      "Greek",
+      "Indian",
+      "Irish",
+      "Italian",
+      "Jamaican",
+      "Japanese",
+      "Kenyan",
+      "Malaysian",
+      "Mexican",
+      "Moroccan",
+      "Polish",
+      "Portuguese",
+      "Russian",
+      "Spanish",
+      "Thai",
+      "Tunisian",
+      "Turkish",
+      "Ukrainian",
+      "Vietnamese",
     ];
+
+    // Cache fallback too
+    saveToCache(cacheKey, fallbackAreas, 60 * 60 * 1000); // 1 hour
+
+    return fallbackAreas;
   }
 }
 

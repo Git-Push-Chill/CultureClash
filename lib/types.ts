@@ -5,6 +5,9 @@ export interface Meal {
   strArea: string;
   strCategory: string;
   strTags?: string;
+  strInstructions?: string;
+  // Dynamic ingredient/measure fields (up to 20)
+  [key: string]: string | undefined;
 }
 
 export interface UserProfile {

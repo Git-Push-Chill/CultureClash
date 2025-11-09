@@ -8,7 +8,7 @@ Culture Clash aims to bridge cultural divides through food by:
 
 - Allowing users to explore cuisines from 28+ countries
 - Generating AI-powered fusion recipes that blend culinary traditions
-- Creating personalized cross-cultural dining experiences
+- Creating personalised cross-cultural dining experiences
 - Building a community around global food exploration
 
 ## Current Features
@@ -120,6 +120,8 @@ npm start
 **AI & Recipe Generation**
 
 - [x] Build "Fuse Flavors" API Route with Google Gemini AI
+- [x] "Randomise Fusion" Button for surprise combinations
+- [x] "Refine Fusion" Button for iterative recipe improvement
 - [x] Integrate AI Prompt for Recipe Generation with detailed instructions
 - [x] Display Generated Fusion Recipes with detailed UI
 - [x] Parse and structure AI responses into FusionRecipe format
@@ -159,20 +161,35 @@ npm start
 - [x] Implement click-outside-to-close for modals
 - [x] Add proper semantic HTML structure
 
+#### ✅ Recently Completed
+
+**Core Features & Optimizations**
+
+- [x] Add more robust validation for edge cases (validation.ts with comprehensive checks)
+- [x] Optimise image loading and caching (imageCache.ts and apiCache.ts implemented)
+- [x] Add flag images to fusion dropdowns with filtering
+- [x] Implement searchable dropdown with country flags
+- [x] Add API response caching to reduce API calls (30min-24hr TTL)
+- [x] Add rate limiting helpers for API protection
+- [x] Implement "Surprise Me!" random fusion button
+- [x] Add "Refine Fusion" button for new recipe variations
+- [x] Create comprehensive error boundary component
+- [x] Add performance monitoring utilities with Web Vitals
+- [x] Implement toast notification system
+- [x] Add keyboard shortcuts hook for better navigation
+- [x] Create loading skeleton components for better UX
+- [x] Add custom scrollbar styling with gradient theme
+- [x] Improve focus management with visible outlines
+- [x] Add smooth scrolling throughout the app
+- [x] Enhance SEO with comprehensive metadata
+
 #### 🚧 In Progress (Backlog)
-
-**Core Features**
-
-- [ ] Add more robust validation for edge cases
-- [ ] Optimize image loading and caching
 
 **Stretch Goals**
 
 - [ ] Add AI Image Generation for fusion dishes (beyond flag fusion)
 - [ ] Implement User Auth & Accounts
 - [ ] Integrate Vercel Postgres/Supabase for data persistence
-- [ ] "Randomize Fusion" Button for surprise combinations
-- [ ] "Refine Fusion" Button for iterative recipe improvement
 - [ ] Social sharing features
 - [ ] Recipe rating system
 - [ ] Community recipe submissions
@@ -187,10 +204,10 @@ npm start
 
 #### 🚧 In Progress
 
-- [ ] Optimize AI API Calls for performance (caching, rate limiting)
+- [ ] Optimise AI API Calls for performance (caching, rate limiting)
 - [ ] Add comprehensive unit and integration tests
 - [ ] Implement performance monitoring
-- [ ] SEO optimization with proper metadata
+- [ ] SEO optimisation with proper metadata
 
 ### Misc Tasks
 
@@ -235,17 +252,28 @@ npm start
 │           └── [world2]/
 │               └── page.tsx            # Fusion results with recipes
 ├── components/
+│   ├── ErrorBoundary.tsx               # Error boundary for error handling
 │   └── ui/                             # Reusable UI components
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── badge.tsx
 │       ├── input.tsx
 │       ├── dialog.tsx                  # Modal/dialog component
+│       ├── toast.tsx                   # Toast notification component
+│       ├── skeleton.tsx                # Loading skeleton components
 │       └── search-history-modal.tsx    # History viewer with recipe details
 ├── lib/
 │   ├── api/
-│   │   ├── meals.ts                    # TheMealDB API integration
+│   │   ├── meals.ts                    # TheMealDB API integration with caching
 │   │   └── fusion.ts                   # Google Gemini AI integration
+│   ├── hooks/
+│   │   ├── useToast.ts                 # Toast notification hook
+│   │   └── useKeyboardShortcut.ts      # Keyboard shortcuts hook
+│   ├── apiCache.ts                     # API response caching utilities
+│   ├── imageCache.ts                   # Image caching and optimization
+│   ├── validation.ts                   # Input validation and sanitization
+│   ├── performance.ts                  # Performance monitoring utilities
+│   ├── countryMapping.ts               # Country code to cuisine mapping
 │   ├── types.ts                        # TypeScript type definitions
 │   └── utils.ts                        # Utility functions (cn, etc.)
 ├── public/                             # Static assets
@@ -299,13 +327,28 @@ American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, Frenc
 - **Persistent Storage**: All data saved to localStorage with structured BridgeProfile
 - **History Modal**: Full-featured modal to view past searches and recipes
 
-### Accessibility Features
+### Accessibility & UX Features
 
 - **Keyboard Navigation**: Full support for Tab, Enter, Space, and Escape keys
 - **ARIA Labels**: Comprehensive labeling for screen readers
-- **Focus Management**: Proper focus trapping in modals
+- **Focus Management**: Proper focus trapping in modals with visible outlines
 - **Semantic HTML**: Proper use of nav, header, section, and main elements
-- **Visual Feedback**: Loading states, hover effects, and focus indicators
+- **Visual Feedback**: Loading states, hover effects, focus indicators, and skeleton loaders
+- **Searchable Dropdowns**: Filter cuisines with flags for easier selection
+- **Custom Scrollbar**: Themed gradient scrollbar matching app aesthetics
+- **Smooth Scrolling**: Enhanced navigation experience
+- **Toast Notifications**: Non-intrusive feedback for user actions
+- **Error Boundaries**: Graceful error handling with recovery options
+
+### Performance & Optimization
+
+- **API Caching**: Smart caching with TTL (30min for meals, 24hrs for areas)
+- **In-Memory Cache**: Fast access during active sessions
+- **Image Optimization**: Automatic image caching and optimization
+- **Rate Limiting**: Protection against API abuse
+- **Performance Monitoring**: Web Vitals tracking (LCP, FID, CLS)
+- **Lazy Loading**: Efficient resource loading for better performance
+- **Cache Management**: Automatic cleanup of expired cache entries
 
 ## Contributing
 

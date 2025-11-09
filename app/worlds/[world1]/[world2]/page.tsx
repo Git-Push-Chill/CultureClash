@@ -88,19 +88,23 @@ export default function BlendedWorldPage() {
   };
 
   const saveToLocalStorage = (foods: string[], worlds: string[]) => {
-    const stored = localStorage.getItem("bridgeProfile");
-    const profile = stored
-      ? JSON.parse(stored)
-      : { favoriteFoods: [], exploredWorlds: [], searchHistory: [] };
+    try {
+      const stored = localStorage.getItem("bridgeProfile");
+      const profile = stored
+        ? JSON.parse(stored)
+        : { favoriteFoods: [], exploredWorlds: [], searchHistory: [] };
 
-    localStorage.setItem(
-      "bridgeProfile",
-      JSON.stringify({
-        ...profile,
-        favoriteFoods: foods,
-        exploredWorlds: worlds,
-      })
-    );
+      localStorage.setItem(
+        "bridgeProfile",
+        JSON.stringify({
+          ...profile,
+          favoriteFoods: foods,
+          exploredWorlds: worlds,
+        })
+      );
+    } catch (error) {
+      console.error("Error saving to localStorage:", error);
+    }
   };
 
   const loadBlendedMealsAndFusion = async () => {
@@ -322,9 +326,21 @@ export default function BlendedWorldPage() {
                     AI-Generated Fusion Recipes ✨
                   </span>
                 </h2>
-                <p className="">
+                <p className=" mb-4">
                   Unique dishes that blend the best of both worlds
                 </p>
+                <div className="flex justify-center gap-4">
+                  <Button
+                    onClick={() => generateFusionRecipes()}
+                    disabled={fusionLoading}
+                    variant="outline"
+                    className="cursor-pointer border-2 border-purple-400/50 text-purple-300 hover:bg-linear-to-r hover:from-purple-600 hover:to-purple-400 hover:text-white hover:scale-105 hover:shadow-lg hover:shadow-purple-500/50 transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed"
+                    aria-label="Generate new fusion recipes"
+                  >
+                    <Sparkles className="w-4 h-4 mr-2" aria-hidden="true" />
+                    {fusionLoading ? "Refining..." : "Refine Fusion"}
+                  </Button>
+                </div>
               </header>
 
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -474,9 +490,7 @@ export default function BlendedWorldPage() {
                       >
                         {selectedRecipe.name}
                       </h2>
-                      <p className="text-gray-200">
-                        {selectedRecipe.description}
-                      </p>
+                      <p>{selectedRecipe.description}</p>
                       <div className="flex gap-2 mt-3">
                         <Badge className="bg-green-500/30 text-green-200 border-green-500/50">
                           {world1}: {selectedRecipe.world1Dish}
