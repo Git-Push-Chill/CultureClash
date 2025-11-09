@@ -75,15 +75,23 @@ export default function Home() {
 
   return (
     <main className="min-h-screen relative overflow-hidden">
+      {/* Skip to main content link for keyboard navigation */}
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-4 focus:left-4 focus:z-50 focus:px-4 focus:py-2 focus:bg-purple-600 focus:text-white focus:rounded-md focus:outline-none focus:ring-2 focus:ring-purple-400"
+      >
+        Skip to main content
+      </a>
+
       {/* Animated background gradient orbs */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
+      <div className="absolute inset-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <div className="absolute top-20 left-10 w-72 h-72 bg-purple-500/20 rounded-full blur-3xl animate-pulse"></div>
         <div className="absolute bottom-20 right-10 w-96 h-96 bg-pink-500/20 rounded-full blur-3xl animate-pulse delay-1000"></div>
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-3xl animate-pulse delay-500"></div>
       </div>
 
-      <div className="container mx-auto p-4 relative z-10">
-        <div
+      <div id="main-content" className="container mx-auto p-4 relative z-10">
+        <header
           className={`text-center mb-12 transition-all duration-1000 ${
             mounted ? "opacity-100 translate-y-0" : "opacity-0 -translate-y-10"
           }`}
@@ -94,130 +102,132 @@ export default function Home() {
             </h1>
           </div>
           <div className="relative inline-block">
-            <Sparkles className="absolute -top-2 -left-8 w-6 h-6 text-yellow-400 animate-bounce" />
+            <Sparkles className="absolute -top-2 -left-8 w-6 h-6 text-yellow-400 animate-bounce" aria-hidden="true" />
             <p className="text-2xl md:text-3xl text-white mb-4 font-semibold">
               Where Taste Bridges Worlds
             </p>
-            <Sparkles className="absolute -bottom-2 -right-8 w-6 h-6 text-yellow-400 animate-bounce delay-300" />
+            <Sparkles className="absolute -bottom-2 -right-8 w-6 h-6 text-yellow-400 animate-bounce delay-300" aria-hidden="true" />
           </div>
           <p className="text-lg text-gray-200 max-w-2xl mx-auto leading-relaxed mt-6">
             Discover unique cross-cultural experiences by fusing cuisines from
             different worlds. Choose your favorite culture and explore another
             to create something extraordinary.
           </p>
-        </div>
+        </header>
 
-        <div className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
-          <Card
-            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 hover:border-blue-200/70 group ${
+        <section aria-label="Getting started guide" className="grid md:grid-cols-3 gap-6 mb-12 max-w-4xl mx-auto">
+          <button
+            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50 hover:-translate-y-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 hover:border-blue-200/70 group rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "100ms" }}
             onClick={handleStartJourney}
+            aria-label="Choose your world - Select your favorite food culture to start your journey"
           >
-            <CardHeader>
-              <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" />
-              <CardTitle className="text-xl text-blue-100 group-hover:text-blue-300 transition-colors">
+            <div className="p-6">
+              <Globe className="w-12 h-12 mx-auto mb-4 text-blue-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true" />
+              <h3 className="text-xl text-blue-100 group-hover:text-blue-300 transition-colors mb-2 font-semibold">
                 Choose Your World
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="group-hover:text-gray-200 transition-colors">
+              </h3>
+              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
                 Select your favorite food culture to start your journey
-              </CardDescription>
-            </CardContent>
-          </Card>
+              </p>
+            </div>
+          </button>
 
-          <Card
-            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group ${
+          <button
+            className={`text-center cursor-pointer transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-yellow-500/50 hover:-translate-y-2 bg-linear-to-br from-yellow-500/10 to-orange-500/10 border-2 border-yellow-400/30 hover:border-yellow-400 group rounded-lg focus:outline-none focus:ring-2 focus:ring-yellow-400 focus:ring-offset-2 focus:ring-offset-gray-900 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "200ms" }}
             onClick={() => setShowHistory(true)}
+            aria-label="Explore again - View your previous cuisine adventures"
           >
-            <CardHeader>
-              <ChefHat className="w-12 h-12 mx-auto mb-4 text-yellow-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" />
-              <CardTitle className="text-xl group-hover:text-yellow-300 transition-colors">
+            <div className="p-6">
+              <ChefHat className="w-12 h-12 mx-auto mb-4 text-yellow-400 transition-transform duration-500 group-hover:rotate-12 group-hover:scale-110" aria-hidden="true" />
+              <h3 className="text-xl group-hover:text-yellow-300 transition-colors mb-2 font-semibold">
                 Explore Again
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="group-hover:text-gray-200 transition-colors">
-                Pick a different world to blend with your favorite
-              </CardDescription>
-            </CardContent>
-          </Card>
+              </h3>
+              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
+                Revisit your previous cuisine adventures
+              </p>
+            </div>
+          </button>
 
-          <Card
-            className={`text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 hover:-translate-y-2 bg-linear-to-br from-pink-500/10 to-red-500/10 border-2 border-pink-400/30 hover:border-pink-400 group ${
+          <div
+            className={`text-center transition-all duration-500 hover:scale-105 hover:shadow-2xl hover:shadow-pink-500/50 hover:-translate-y-2 bg-linear-to-br from-pink-500/10 to-red-500/10 border-2 border-pink-400/30 hover:border-pink-400 group rounded-lg ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "300ms" }}
+            role="article"
+            aria-label="Step 3: Discover magic"
           >
-            <CardHeader>
-              <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500 transition-transform duration-500 group-hover:scale-110 group-hover:fill-pink-500" />
-              <CardTitle className="text-xl group-hover:text-red-300 transition-colors">
+            <div className="p-6">
+              <Heart className="w-12 h-12 mx-auto mb-4 text-pink-500 transition-transform duration-500 group-hover:scale-110 group-hover:fill-pink-500" aria-hidden="true" />
+              <h3 className="text-xl group-hover:text-red-300 transition-colors mb-2 font-semibold">
                 Discover Magic
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <CardDescription className="group-hover:text-gray-200 transition-colors">
+              </h3>
+              <p className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors">
                 View curated dishes that blend both cultures
-              </CardDescription>
-            </CardContent>
-          </Card>
-        </div>
+              </p>
+            </div>
+          </div>
+        </section>
 
         {exploredWorlds.length > 0 && (
-          <div
+          <section
             className={`max-w-4xl mx-auto mb-8 transition-all duration-700 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "400ms" }}
+            aria-label="Your explored worlds"
           >
-            <h3 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
-              <Globe className="w-5 h-5 text-blue-400" />
+            <h2 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
+              <Globe className="w-5 h-5 text-blue-400" aria-hidden="true" />
               Your Journey So Far
-            </h3>
-            <div className="flex flex-wrap gap-3 justify-center">
+            </h2>
+            <ul className="flex flex-wrap gap-3 justify-center" role="list">
               {exploredWorlds.slice(-5).map((world, index) => (
-                <Badge
-                  key={world}
-                  variant="default"
-                  className="text-sm px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 text-blue-100 hover:scale-110 hover:border-blue-200/70 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-blue-400/20"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  {world}
-                </Badge>
+                <li key={world}>
+                  <Badge
+                    variant="default"
+                    className="text-sm px-4 py-2 bg-linear-to-r from-[#442763] to-[#2d1942] border-2 border-blue-300/50 text-blue-100 hover:scale-110 hover:border-blue-200/70 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-blue-400/20"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {world}
+                  </Badge>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </section>
         )}
 
         {favoriteFoods.length > 0 && (
-          <div
+          <section
             className={`max-w-4xl mx-auto mb-8 transition-all duration-700 ${
               mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"
             }`}
             style={{ transitionDelay: "500ms" }}
+            aria-label="Your favorite dishes"
           >
-            <h3 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
-              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" />
+            <h2 className="text-lg font-semibold mb-3 text-center text-white flex items-center justify-center gap-2">
+              <Heart className="w-5 h-5 text-pink-500 fill-pink-500" aria-hidden="true" />
               Your Favorite Dishes
-            </h3>
-            <div className="flex flex-wrap gap-3 justify-center">
+            </h2>
+            <ul className="flex flex-wrap gap-3 justify-center" role="list">
               {favoriteFoods.slice(-5).map((food, index) => (
-                <Badge
-                  key={food}
-                  variant="default"
-                  className="text-sm px-4 py-2 bg-linear-to-r from-pink-500 to-purple-500 border-2 border-pink-300 hover:scale-110 hover:border-pink-200 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-pink-500/30"
-                  style={{ animationDelay: `${index * 100}ms` }}
-                >
-                  {food}
-                </Badge>
+                <li key={food}>
+                  <Badge
+                    variant="default"
+                    className="text-sm px-4 py-2 bg-linear-to-r from-pink-500 to-purple-500 border-2 border-pink-300 hover:scale-110 hover:border-pink-200 transition-all cursor-default animate-fade-in font-medium shadow-lg shadow-pink-500/30"
+                    style={{ animationDelay: `${index * 100}ms` }}
+                  >
+                    {food}
+                  </Badge>
+                </li>
               ))}
-            </div>
-          </div>
+            </ul>
+          </section>
         )}
 
         {/* New Card for Previous Adventures */}
