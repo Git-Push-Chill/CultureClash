@@ -186,7 +186,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
                 Select your favorite food culture to start your journey
               </CardDescription>
             </CardContent>
@@ -218,7 +218,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
                 Revisit your previous cuisine adventures
               </CardDescription>
             </CardContent>
@@ -250,7 +250,7 @@ export default function Home() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <CardDescription className="text-sm text-gray-300 group-hover:text-gray-200 transition-colors text-center">
+              <CardDescription className="text-sm  group-hover:text-gray-200 transition-colors text-center">
                 View curated dishes that blend both cultures
               </CardDescription>
             </CardContent>

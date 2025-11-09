@@ -65,7 +65,7 @@ export function SearchHistoryModal({
               <DialogTitle className="text-3xl font-bold text-white">
                 🌍 Previous Culinary Adventures
               </DialogTitle>
-              <p className="text-gray-300 mt-2">
+              <p className=" mt-2">
                 Revisit your flavor fusions from around the world
               </p>
             </DialogHeader>
@@ -169,7 +169,7 @@ export function SearchHistoryModal({
                     setSelectedRecipe(null);
                     setSelectedItem(null);
                   }}
-                  className="text-gray-300 hover:text-white hover:bg-gray-800"
+                  className=" hover:text-white hover:bg-gray-800"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to History
@@ -180,7 +180,7 @@ export function SearchHistoryModal({
                 <span className="text-purple-400 mx-2">×</span>
                 <span className="text-blue-400">{selectedItem.world2}</span>
               </DialogTitle>
-              <p className="text-gray-300 mt-2">
+              <p className=" mt-2">
                 <Clock className="w-4 h-4 inline mr-2" />
                 {new Date(selectedItem.timestamp).toLocaleDateString()} at{" "}
                 {new Date(selectedItem.timestamp).toLocaleTimeString()}
@@ -194,7 +194,7 @@ export function SearchHistoryModal({
                   variant="ghost"
                   size="sm"
                   onClick={() => setSelectedRecipe(null)}
-                  className="mb-4 text-gray-300 hover:text-white hover:bg-gray-800"
+                  className="mb-4  hover:text-white hover:bg-gray-800"
                 >
                   <ArrowLeft className="w-4 h-4 mr-2" />
                   Back to Recipes
@@ -216,9 +216,7 @@ export function SearchHistoryModal({
                   <h3 className="text-2xl font-bold text-white mb-2">
                     {selectedRecipe.name}
                   </h3>
-                  <p className="text-gray-300 mb-4">
-                    {selectedRecipe.description}
-                  </p>
+                  <p className=" mb-4">{selectedRecipe.description}</p>
 
                   <div className="flex gap-2 mb-4">
                     <Badge className="bg-green-500/30 text-green-200 border-green-500/50">
@@ -231,19 +229,19 @@ export function SearchHistoryModal({
 
                   {/* Recipe Info */}
                   <div className="flex flex-wrap gap-4 mb-6 pb-4 border-b border-gray-700">
-                    <div className="flex items-center gap-2 text-gray-300">
+                    <div className="flex items-center gap-2 ">
                       <Users className="w-5 h-5 text-purple-400" />
                       <span>
                         <strong>{selectedRecipe.servings}</strong> servings
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-300">
+                    <div className="flex items-center gap-2 ">
                       <Clock className="w-5 h-5 text-blue-400" />
                       <span>
                         Prep: <strong>{selectedRecipe.prepTime}</strong>
                       </span>
                     </div>
-                    <div className="flex items-center gap-2 text-gray-300">
+                    <div className="flex items-center gap-2 ">
                       <Flame className="w-5 h-5 text-orange-400" />
                       <span>
                         Cook: <strong>{selectedRecipe.cookTime}</strong>
@@ -269,7 +267,7 @@ export function SearchHistoryModal({
                               : "bg-purple-500/10 border border-purple-500/30"
                           }`}
                         >
-                          <span className="text-gray-300">
+                          <span className="">
                             <strong className="text-white">
                               {ingredient.amount}
                             </strong>{" "}
@@ -288,10 +286,7 @@ export function SearchHistoryModal({
                     </h4>
                     <ol className="space-y-2">
                       {selectedRecipe.instructions.map((instruction, idx) => (
-                        <li
-                          key={idx}
-                          className="flex gap-3 text-gray-300 text-sm"
-                        >
+                        <li key={idx} className="flex gap-3  text-sm">
                           <span className="shrink-0 w-6 h-6 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white text-xs">
                             {idx + 1}
                           </span>
@@ -307,7 +302,7 @@ export function SearchHistoryModal({
                       <Sparkles className="w-5 h-5 text-yellow-400" />
                       Cultural Fusion Notes
                     </h4>
-                    <p className="text-gray-300 text-sm leading-relaxed">
+                    <p className=" text-sm leading-relaxed">
                       {selectedRecipe.culturalNotes}
                     </p>
                   </div>
@@ -348,13 +343,13 @@ export function SearchHistoryModal({
                       </CardHeader>
                       <CardContent>
                         <div className="space-y-2 text-sm">
-                          <div className="flex items-center gap-2 text-gray-300">
+                          <div className="flex items-center gap-2 ">
                             <Clock className="w-4 h-4 text-blue-400" />
                             <span>
                               {recipe.prepTime} + {recipe.cookTime}
                             </span>
                           </div>
-                          <div className="flex items-center gap-2 text-gray-300">
+                          <div className="flex items-center gap-2 ">
                             <Users className="w-4 h-4 text-purple-400" />
                             <span>{recipe.servings} servings</span>
                           </div>

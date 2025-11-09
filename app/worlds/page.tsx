@@ -51,7 +51,7 @@ export default function WorldFusionSelector() {
               className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"
               aria-hidden="true"
             ></div>
-            <p className="mt-4 text-gray-300">Loading worlds...</p>
+            <p className="mt-4 ">Loading worlds...</p>
           </div>
         </div>
       </main>
@@ -76,14 +76,10 @@ export default function WorldFusionSelector() {
         </div>
 
         <header className="text-center mb-12" role="banner">
-          <Globe
-            className="w-16 h-16 mx-auto mb-4 text-purple-500 animate-pulse"
-            aria-hidden="true"
-          />
-          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-linear-to-r from-purple-400 via-pink-500 to-purple-600 bg-clip-text text-transparent">
+          <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold mb-4 bg-linear-to-r from-green-400 via-purple-500 to-pink-500 bg-clip-text text-transparent drop-shadow-[0_0_30px_rgba(168,85,247,0.5)] animate-gradient-x">
             Create Your Fusion
           </h1>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-200 max-w-2xl mx-auto">
             Select two cuisine cultures to blend together
           </p>
         </header>
@@ -95,7 +91,7 @@ export default function WorldFusionSelector() {
               <CardTitle className="text-2xl text-center text-white">
                 Fusion Creator
               </CardTitle>
-              <CardDescription className="text-center text-gray-300">
+              <CardDescription className="text-center ">
                 Choose two worlds to discover their culinary harmony
               </CardDescription>
             </CardHeader>
@@ -113,7 +109,7 @@ export default function WorldFusionSelector() {
                     id="world1-select"
                     value={world1}
                     onChange={(e) => setWorld1(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400 cursor-pointer"
+                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400"
                     aria-label="Select first cuisine"
                   >
                     <option value="" className="bg-gray-800">
@@ -155,7 +151,7 @@ export default function WorldFusionSelector() {
                     id="world2-select"
                     value={world2}
                     onChange={(e) => setWorld2(e.target.value)}
-                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400 cursor-pointer"
+                    className="w-full px-4 py-3 bg-gray-800/80 border-2 border-purple-500/50 rounded-lg text-white focus:border-purple-400 focus:ring-2 focus:ring-purple-400/50 focus:outline-none transition-all duration-300 hover:border-purple-400"
                     aria-label="Select second cuisine"
                   >
                     <option value="" className="bg-gray-800">
@@ -180,7 +176,7 @@ export default function WorldFusionSelector() {
                 <Button
                   onClick={handleGenerateFusion}
                   disabled={!isReadyToFuse}
-                  className="px-8 py-6 text-lg font-bold bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg shadow-lg shadow-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/70 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
+                  className="cursor-pointer px-8 py-6 text-lg font-bold bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-500 hover:to-pink-500 text-white rounded-lg shadow-lg shadow-purple-500/50 transition-all duration-300 hover:scale-105 hover:shadow-xl hover:shadow-purple-500/70 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100 disabled:hover:shadow-lg focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 focus:ring-offset-gray-900"
                   aria-label={
                     isReadyToFuse
                       ? `Generate fusion between ${world1} and ${world2}`
@@ -195,21 +191,15 @@ export default function WorldFusionSelector() {
               {/* Selection Preview */}
               {world1 && world2 && (
                 <div className="mt-6 text-center">
-                  <p className="text-gray-300">
+                  <p>
                     {world1 === world2 ? (
                       <span className="text-yellow-400">
                         Please select two different cuisines
                       </span>
                     ) : (
                       <>
-                        Creating fusion:{" "}
-                        <span className="text-purple-400 font-semibold">
-                          {world1}
-                        </span>{" "}
-                        ×{" "}
-                        <span className="text-pink-400 font-semibold">
-                          {world2}
-                        </span>
+                        Creating fusion: <span>{world1}</span> ×{" "}
+                        <span>{world2}</span>
                       </>
                     )}
                   </p>

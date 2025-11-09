@@ -282,9 +282,7 @@ export default function BlendedWorldPage() {
               {world2}
             </span>
           </h1>
-          <p className="text-xl text-gray-300">
-            Your Blended Cultural Experience
-          </p>
+          <p className="text-xl ">Your Blended Cultural Experience</p>
         </header>
 
         {loading || fusionLoading ? (
@@ -293,7 +291,7 @@ export default function BlendedWorldPage() {
               className="animate-spin rounded-full h-16 w-16 border-b-4 border-purple-600 mx-auto"
               aria-hidden="true"
             ></div>
-            <p className="mt-4 text-lg text-gray-300">
+            <p className="mt-4 text-lg ">
               {loading
                 ? "Creating your unique blend..."
                 : "Our AI chef is creating fusion masterpieces..."}
@@ -305,7 +303,7 @@ export default function BlendedWorldPage() {
               <p className="text-red-400 text-lg font-semibold mb-2">
                 Oops! Something went wrong
               </p>
-              <p className="text-gray-300 mb-4">{fusionError}</p>
+              <p className=" mb-4">{fusionError}</p>
               <Button
                 onClick={() => generateFusionRecipes()}
                 className="bg-linear-to-r from-purple-600 to-pink-600 hover:from-purple-700 hover:to-pink-700"
@@ -324,7 +322,7 @@ export default function BlendedWorldPage() {
                     AI-Generated Fusion Recipes ✨
                   </span>
                 </h2>
-                <p className="text-gray-300">
+                <p className="">
                   Unique dishes that blend the best of both worlds
                 </p>
               </header>
@@ -407,7 +405,7 @@ export default function BlendedWorldPage() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-3">
-                        <div className="flex items-center gap-2 text-sm text-gray-300">
+                        <div className="flex items-center gap-2 text-sm ">
                           <Clock
                             className="w-4 h-4 text-blue-400"
                             aria-hidden="true"
@@ -416,7 +414,7 @@ export default function BlendedWorldPage() {
                             {recipe.prepTime} prep + {recipe.cookTime} cook
                           </span>
                         </div>
-                        <div className="flex items-center gap-2 text-sm text-gray-300">
+                        <div className="flex items-center gap-2 text-sm ">
                           <Users
                             className="w-4 h-4 text-purple-400"
                             aria-hidden="true"
@@ -503,7 +501,7 @@ export default function BlendedWorldPage() {
                   <div className="p-6">
                     {/* Recipe Info */}
                     <dl className="flex flex-wrap gap-4 mb-6 pb-6 border-b border-purple-400/20">
-                      <div className="flex items-center gap-2 text-gray-300">
+                      <div className="flex items-center gap-2 ">
                         <Users
                           className="w-5 h-5 text-purple-400"
                           aria-hidden="true"
@@ -513,7 +511,7 @@ export default function BlendedWorldPage() {
                           <strong>{selectedRecipe.servings}</strong> servings
                         </dd>
                       </div>
-                      <div className="flex items-center gap-2 text-gray-300">
+                      <div className="flex items-center gap-2 ">
                         <Clock
                           className="w-5 h-5 text-blue-400"
                           aria-hidden="true"
@@ -523,7 +521,7 @@ export default function BlendedWorldPage() {
                           Prep: <strong>{selectedRecipe.prepTime}</strong>
                         </dd>
                       </div>
-                      <div className="flex items-center gap-2 text-gray-300">
+                      <div className="flex items-center gap-2 ">
                         <Flame
                           className="w-5 h-5 text-orange-400"
                           aria-hidden="true"
@@ -562,7 +560,7 @@ export default function BlendedWorldPage() {
                                 : "bg-purple-500/10 border border-purple-500/30"
                             }`}
                           >
-                            <span className="text-gray-300">
+                            <span className="">
                               <strong className="text-white">
                                 {ingredient.amount}
                               </strong>{" "}
@@ -590,7 +588,7 @@ export default function BlendedWorldPage() {
                       </h3>
                       <ol className="space-y-3" role="list">
                         {selectedRecipe.instructions.map((instruction, idx) => (
-                          <li key={idx} className="flex gap-3 text-gray-300">
+                          <li key={idx} className="flex gap-3 ">
                             <span
                               className="shrink-0 w-8 h-8 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white"
                               aria-hidden="true"
@@ -618,7 +616,7 @@ export default function BlendedWorldPage() {
                         />
                         Cultural Fusion Notes
                       </h3>
-                      <p className="text-gray-300 leading-relaxed">
+                      <p className=" leading-relaxed">
                         {selectedRecipe.culturalNotes}
                       </p>
                     </aside>
