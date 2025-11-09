@@ -14,24 +14,36 @@ Culture Clash aims to bridge cultural divides through food by:
 ## Current Features
 
 - **🌍 World Selection**: Choose from 28+ different food cultures worldwide
-- **🤖 AI Fusion Recipes**: Generate creative fusion recipes using Google Gemini AI
-- **👨‍🍳 Smart Recipe Generation**: AI blends ingredients, techniques, and traditions from both cuisines
-- **📖 Detailed Recipes**: Complete with ingredients, instructions, prep/cook times, and cultural notes
-- **📱 Responsive Design**: Beautiful UI built with Tailwind CSS and shadcn/ui components
-- **🎨 Gradient Themes**: Eye-catching gradient backgrounds and visual effects
-- **💾 Local Storage**: Save your favorite dishes and track explored world combinations
+- **🤖 AI Fusion Recipes**: Generate creative fusion recipes using Google Gemini AI (gemini-1.5-flash model)
+- **👨‍🍳 Smart Recipe Generation**: AI blends ingredients, techniques, and traditions from both cuisines with detailed origin tracking
+- **📖 Detailed Recipes**: Complete with ingredients, instructions, prep/cook times, servings, and cultural notes
+- **🏴 Visual Flag Fusion**: Dynamic diagonal-split flag images combining both countries
+- **💾 Local Storage**: Persistent storage for favorites, explored worlds, and search history
+- **❤️ Favorites System**: Save and toggle favorite dishes across sessions
+- **� Search History**: Track your last 10 cuisine fusion explorations with full recipe details
+- **🔄 History Modal**: View and revisit previous fusion combinations with saved recipes
+- **�📱 Responsive Design**: Beautiful UI built with Tailwind CSS and shadcn/ui components
+- **🎨 Gradient Themes**: Eye-catching gradient backgrounds and visual effects with animations
+- **♿ Accessibility**: ARIA labels, keyboard navigation, focus management, and screen reader support
+- **⚡ Error Handling**: Comprehensive error handling with user-friendly messages and retry functionality
+- **🎯 Modal Interactions**: Keyboard navigation (Escape key), focus trapping, and click-outside-to-close
 
 ## Technology Stack
 
 - **Framework**: Next.js 15 with App Router
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS v4 with custom theme
-- **UI Components**: shadcn/ui components
+- **Language**: TypeScript 5.9
+- **Styling**: Tailwind CSS v4 with custom theme and animations
+- **UI Components**: shadcn/ui components (Dialog, Card, Button, Badge, Input)
+- **Animations**: Framer Motion for advanced animations
 - **Icons**: Lucide React
-- **API**: TheMealDB API (with fallback mock data)
-- **AI**: To be integrated for recipe generation
-- **Database**: To be integrated (Vercel Postgres/Supabase)
-- **Deployment**: Vercel
+- **APIs**:
+  - TheMealDB API for cuisine data
+  - Google Gemini AI (gemini-1.5-flash) for recipe generation
+  - FlagCDN for country flag images
+- **State Management**: React Hooks (useState, useEffect, useRef)
+- **Data Persistence**: localStorage with structured BridgeProfile
+- **Routing**: Next.js App Router with dynamic routes
+- **Deployment**: Vercel (planned)
 
 ## Getting Started
 
@@ -90,51 +102,116 @@ npm start
 
 #### ✅ Completed
 
+**Core Setup & Architecture**
+
 - [x] Create DevPost Project
 - [x] Make CoPilot Starter Template
-- [x] Set up initial project structure
+- [x] Set up initial project structure with Next.js 15 App Router
+- [x] Configure TypeScript with proper type definitions
 - [x] Implement basic UI with shadcn/ui components
+
+**Cuisine Selection & Navigation**
+
 - [x] Implement Cuisine Selection UI with proper routing
-- [x] Refactor to use Next.js App Router with dynamic routes
+- [x] Refactor to use Next.js App Router with dynamic routes (`/worlds/[world1]/[world2]`)
 - [x] Connect to Food Data API (TheMealDB integration)
+- [x] Implement proper navigation flow between pages
+
+**AI & Recipe Generation**
+
 - [x] Build "Fuse Flavors" API Route with Google Gemini AI
-- [x] Integrate AI Prompt for Recipe Generation
+- [x] Integrate AI Prompt for Recipe Generation with detailed instructions
 - [x] Display Generated Fusion Recipes with detailed UI
-- [x] Implement "Save to Favorites" Feature
+- [x] Parse and structure AI responses into FusionRecipe format
+- [x] Include ingredient origin tracking (world1, world2, or both)
+- [x] Generate cultural notes explaining the fusion
+
+**Visual Features**
+
+- [x] Build "Flag Fusion" API Route for diagonal-split flag images
+- [x] Integrate real flag images from flagcdn.com
+- [x] Display fusion flags on recipe cards
+- [x] Implement gradient animations and visual effects
+
+**Data Persistence & Features**
+
+- [x] Implement "Save to Favorites" Feature with toggle functionality
+- [x] Track Explored World Combinations
+- [x] Build Search History System (stores last 10 searches)
+- [x] Create Search History Modal Component
+- [x] Persist data using localStorage with BridgeProfile structure
+- [x] Save fusion recipes with search history
+
+**Error Handling & UX**
+
 - [x] Implement Error Handling for API calls
+- [x] Add loading states with visual feedback
+- [x] Create user-friendly error messages
+- [x] Add "Try Again" functionality for failed API calls
+- [x] Handle JSON parsing errors gracefully
+
+**Accessibility & User Experience**
+
+- [x] Add ARIA labels throughout the application
+- [x] Implement keyboard navigation (Tab, Enter, Space, Escape)
+- [x] Add focus management for modals
+- [x] Prevent body scroll when modal is open
+- [x] Implement click-outside-to-close for modals
+- [x] Add proper semantic HTML structure
 
 #### 🚧 In Progress (Backlog)
 
 **Core Features**
 
 - [ ] Add more robust validation for edge cases
+- [ ] Optimize image loading and caching
 
 **Stretch Goals**
 
-- [ ] Add AI Image Generation/Handling for fusion dishes
+- [ ] Add AI Image Generation for fusion dishes (beyond flag fusion)
 - [ ] Implement User Auth & Accounts
 - [ ] Integrate Vercel Postgres/Supabase for data persistence
 - [ ] "Randomize Fusion" Button for surprise combinations
 - [ ] "Refine Fusion" Button for iterative recipe improvement
+- [ ] Social sharing features
+- [ ] Recipe rating system
+- [ ] Community recipe submissions
 
 ### Non-Functional Requirements
 
-- [ ] Optimize AI API Calls for performance
-- [ ] Ensure Accessibility (WCAG 2.1 compliance)
+#### ✅ Completed
+
+- [x] Ensure Accessibility (ARIA labels, keyboard navigation, focus management)
+- [x] Implement responsive design for mobile and desktop
+- [x] Add proper error handling throughout the app
+
+#### 🚧 In Progress
+
+- [ ] Optimize AI API Calls for performance (caching, rate limiting)
+- [ ] Add comprehensive unit and integration tests
+- [ ] Implement performance monitoring
+- [ ] SEO optimization with proper metadata
 
 ### Misc Tasks
 
 - [ ] Prepare Hackathon Demo Script
 
-## How It Will Work (Planned)
+## How It Works
 
-1. **Welcome Screen**: Start your journey from the homepage
-2. **Select Home World**: Choose your favorite food culture
+1. **Welcome Screen**: Start your journey from the homepage with options to explore or view history
+2. **Select First World**: Choose your favorite food culture from 28+ cuisines
 3. **Select Second World**: Pick another culture to blend with
-4. **AI Fusion Generation**: Get AI-generated fusion recipes combining both cuisines
-5. **View Fusion Recipe**: See detailed ingredients, instructions, and cultural context
-6. **Save Favorites**: Save fusion recipes to your account
-7. **Journey History**: Track all the worlds you've explored and recipes you've created
+4. **AI Fusion Generation**: AI automatically generates 3 fusion recipes combining both cuisines
+5. **View Fusion Recipes**: Browse recipe cards with diagonal-split flag images
+6. **Detailed Recipe Modal**: Click any recipe to see:
+   - Full ingredients list with origin tracking (world1, world2, or both)
+   - Step-by-step cooking instructions
+   - Prep time, cook time, and servings
+   - Cultural notes explaining the fusion
+   - Source dishes from both cuisines
+7. **Save Favorites**: Toggle heart icon to save/unsave dishes to favorites
+8. **Journey History**: Track your last 10 fusion explorations with full recipe details
+9. **History Modal**: View and revisit previous fusion combinations with saved recipes
 
 ## Project Structure
 
@@ -142,45 +219,93 @@ npm start
 .
 ├── app/
 │   ├── layout.tsx                      # Root layout with metadata
-│   ├── page.tsx                        # Homepage/welcome screen
+│   ├── page.tsx                        # Homepage/welcome screen with history
 │   ├── globals.css                     # Global styles and CSS variables
+│   ├── api/
+│   │   ├── fuse-flavors/
+│   │   │   └── route.ts                # POST endpoint for AI recipe generation
+│   │   ├── flag-fusion/
+│   │   │   └── route.ts                # GET endpoint for diagonal-split flags
+│   │   └── test-gemini/
+│   │       └── route.ts                # Test endpoint for Gemini API
 │   └── worlds/
 │       ├── page.tsx                    # World selection (first world)
 │       └── [world1]/
 │           ├── page.tsx                # Second world selection
 │           └── [world2]/
-│               └── page.tsx            # Blended results page
+│               └── page.tsx            # Fusion results with recipes
 ├── components/
 │   └── ui/                             # Reusable UI components
 │       ├── button.tsx
 │       ├── card.tsx
 │       ├── badge.tsx
-│       └── input.tsx
+│       ├── input.tsx
+│       ├── dialog.tsx                  # Modal/dialog component
+│       └── search-history-modal.tsx    # History viewer with recipe details
 ├── lib/
 │   ├── api/
-│   │   └── meals.ts                    # API integration and mock data
-│   ├── hooks/
-│   │   └── useLocalStorage.ts          # Custom hook for localStorage
+│   │   ├── meals.ts                    # TheMealDB API integration
+│   │   └── fusion.ts                   # Google Gemini AI integration
 │   ├── types.ts                        # TypeScript type definitions
-│   └── utils.ts                        # Utility functions
+│   └── utils.ts                        # Utility functions (cn, etc.)
+├── public/                             # Static assets
 ├── next.config.ts                      # Next.js configuration
 ├── tailwind.config.ts                  # Tailwind CSS configuration
-└── tsconfig.json                       # TypeScript configuration
+├── tsconfig.json                       # TypeScript configuration
+└── package.json                        # Dependencies and scripts
 ```
 
 ## API Integration
 
-- **Food Data**: [TheMealDB API](https://www.themealdb.com/api.php) for cuisine information
-- **AI Integration**: [Google Gemini AI](https://ai.google.dev/) (gemini-1.5-flash model) for fusion recipe generation
-- **Image Generation**: To be implemented for visual representation of fusion dishes
+- **Food Data**: [TheMealDB API](https://www.themealdb.com/api.php) for cuisine information and meal details
+- **AI Integration**: [Google Gemini AI](https://ai.google.dev/) (gemini-1.5-flash model) for fusion recipe generation with structured JSON responses
+- **Flag Images**: [FlagCDN](https://flagcdn.com/) for high-quality country flag images
+- **Visual Fusion**: Custom SVG generation for diagonal-split flag fusion images with base64 embedding
 
 ## Deployment
 
 This project will be deployed on Vercel. See [DEPLOYMENT.md](DEPLOYMENT.md) for detailed deployment instructions.
 
-## Available Worlds
+## Available Worlds (28 Cuisines)
 
 American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, French, Greek, Indian, Irish, Italian, Jamaican, Japanese, Kenyan, Malaysian, Mexican, Moroccan, Polish, Portuguese, Russian, Spanish, Thai, Tunisian, Turkish, Ukrainian, Vietnamese
+
+## Key Features in Detail
+
+### AI-Powered Fusion Recipe Generation
+
+- Generates 3 unique fusion recipes per cuisine combination
+- Each recipe includes:
+  - Creative name reflecting both cultures
+  - Detailed description
+  - Source dishes from both cuisines
+  - Ingredients with measurements and origin tags
+  - Step-by-step cooking instructions
+  - Cultural notes explaining the fusion
+  - Prep time, cook time, and servings
+
+### Visual Flag Fusion
+
+- Dynamic SVG generation combining two country flags
+- Diagonal split from top-left to bottom-right
+- Base64-embedded images for better compatibility
+- Displayed on recipe cards for visual appeal
+
+### Search History & Favorites
+
+- **Search History**: Stores last 10 cuisine fusion explorations
+- **Favorites**: Toggle heart icon to save/remove favorite dishes
+- **Explored Worlds**: Tracks all world combinations you've tried
+- **Persistent Storage**: All data saved to localStorage with structured BridgeProfile
+- **History Modal**: Full-featured modal to view past searches and recipes
+
+### Accessibility Features
+
+- **Keyboard Navigation**: Full support for Tab, Enter, Space, and Escape keys
+- **ARIA Labels**: Comprehensive labeling for screen readers
+- **Focus Management**: Proper focus trapping in modals
+- **Semantic HTML**: Proper use of nav, header, section, and main elements
+- **Visual Feedback**: Loading states, hover effects, and focus indicators
 
 ## Contributing
 
