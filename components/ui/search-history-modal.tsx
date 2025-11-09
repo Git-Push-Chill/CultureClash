@@ -6,10 +6,24 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { SearchHistoryItem, FusionRecipe } from "@/lib/types";
-import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "./card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+} from "./card";
 import { Badge } from "./badge";
 import { Button } from "./button";
-import { Clock, Globe, ChefHat, Users, Flame, Sparkles, ArrowLeft } from "lucide-react";
+import {
+  Clock,
+  Globe,
+  ChefHat,
+  Users,
+  Flame,
+  Sparkles,
+  ArrowLeft,
+} from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
@@ -24,13 +38,21 @@ export function SearchHistoryModal({
   onClose,
   history,
 }: SearchHistoryModalProps) {
-  const [selectedItem, setSelectedItem] = useState<SearchHistoryItem | null>(null);
-  const [selectedRecipe, setSelectedRecipe] = useState<FusionRecipe | null>(null);
+  const [selectedItem, setSelectedItem] = useState<SearchHistoryItem | null>(
+    null
+  );
+  const [selectedRecipe, setSelectedRecipe] = useState<FusionRecipe | null>(
+    null
+  );
   const router = useRouter();
 
   const handleViewFusion = (item: SearchHistoryItem) => {
     onClose();
-    router.push(`/worlds/${encodeURIComponent(item.world1)}/${encodeURIComponent(item.world2)}`);
+    router.push(
+      `/worlds/${encodeURIComponent(item.world1)}/${encodeURIComponent(
+        item.world2
+      )}`
+    );
   };
 
   return (
@@ -52,7 +74,9 @@ export function SearchHistoryModal({
                 <div className="text-center py-12">
                   <Globe className="w-16 h-16 mx-auto mb-4 text-gray-600" />
                   <p className="text-gray-400 text-lg">No adventures yet!</p>
-                  <p className="text-gray-500 mt-2">Start exploring to create your fusion history</p>
+                  <p className="text-gray-500 mt-2">
+                    Start exploring to create your fusion history
+                  </p>
                 </div>
               ) : (
                 history.map((item, index) => (
@@ -67,16 +91,24 @@ export function SearchHistoryModal({
                           <Globe className="w-5 h-5 text-purple-400" />
                           <div>
                             <div className="flex items-center gap-2 text-xl font-bold">
-                              <span className="text-green-400">{item.world1}</span>
+                              <span className="text-green-400">
+                                {item.world1}
+                              </span>
                               <span className="text-purple-400">×</span>
-                              <span className="text-blue-400">{item.world2}</span>
+                              <span className="text-blue-400">
+                                {item.world2}
+                              </span>
                             </div>
                             <p className="text-sm text-gray-400 mt-1">
-                              {item.fusionRecipes?.length || 0} fusion recipes created
+                              {item.fusionRecipes?.length || 0} fusion recipes
+                              created
                             </p>
                           </div>
                         </div>
-                        <Badge variant="secondary" className="bg-purple-500/20 text-purple-300 border-purple-500/30">
+                        <Badge
+                          variant="secondary"
+                          className="bg-purple-500/20 text-purple-300 border-purple-500/30"
+                        >
                           <Clock className="w-3 h-3 mr-1" />
                           {new Date(item.timestamp).toLocaleDateString()}
                         </Badge>
@@ -105,7 +137,9 @@ export function SearchHistoryModal({
                             </div>
                           ))
                         ) : (
-                          <p className="text-gray-500 text-sm">No recipes generated yet</p>
+                          <p className="text-gray-500 text-sm">
+                            No recipes generated yet
+                          </p>
                         )}
                       </div>
                       <Button
@@ -182,7 +216,9 @@ export function SearchHistoryModal({
                   <h3 className="text-2xl font-bold text-white mb-2">
                     {selectedRecipe.name}
                   </h3>
-                  <p className="text-gray-300 mb-4">{selectedRecipe.description}</p>
+                  <p className="text-gray-300 mb-4">
+                    {selectedRecipe.description}
+                  </p>
 
                   <div className="flex gap-2 mb-4">
                     <Badge className="bg-green-500/30 text-green-200 border-green-500/50">
@@ -197,15 +233,21 @@ export function SearchHistoryModal({
                   <div className="flex flex-wrap gap-4 mb-6 pb-4 border-b border-gray-700">
                     <div className="flex items-center gap-2 text-gray-300">
                       <Users className="w-5 h-5 text-purple-400" />
-                      <span><strong>{selectedRecipe.servings}</strong> servings</span>
+                      <span>
+                        <strong>{selectedRecipe.servings}</strong> servings
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-300">
                       <Clock className="w-5 h-5 text-blue-400" />
-                      <span>Prep: <strong>{selectedRecipe.prepTime}</strong></span>
+                      <span>
+                        Prep: <strong>{selectedRecipe.prepTime}</strong>
+                      </span>
                     </div>
                     <div className="flex items-center gap-2 text-gray-300">
                       <Flame className="w-5 h-5 text-orange-400" />
-                      <span>Cook: <strong>{selectedRecipe.cookTime}</strong></span>
+                      <span>
+                        Cook: <strong>{selectedRecipe.cookTime}</strong>
+                      </span>
                     </div>
                   </div>
 
@@ -228,7 +270,9 @@ export function SearchHistoryModal({
                           }`}
                         >
                           <span className="text-gray-300">
-                            <strong className="text-white">{ingredient.amount}</strong>{" "}
+                            <strong className="text-white">
+                              {ingredient.amount}
+                            </strong>{" "}
                             {ingredient.name}
                           </span>
                         </div>
@@ -244,7 +288,10 @@ export function SearchHistoryModal({
                     </h4>
                     <ol className="space-y-2">
                       {selectedRecipe.instructions.map((instruction, idx) => (
-                        <li key={idx} className="flex gap-3 text-gray-300 text-sm">
+                        <li
+                          key={idx}
+                          className="flex gap-3 text-gray-300 text-sm"
+                        >
                           <span className="shrink-0 w-6 h-6 rounded-full bg-linear-to-r from-purple-600 to-pink-600 flex items-center justify-center font-bold text-white text-xs">
                             {idx + 1}
                           </span>
@@ -269,7 +316,8 @@ export function SearchHistoryModal({
             ) : (
               // Recipe Grid
               <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4 mt-6">
-                {selectedItem.fusionRecipes && selectedItem.fusionRecipes.length > 0 ? (
+                {selectedItem.fusionRecipes &&
+                selectedItem.fusionRecipes.length > 0 ? (
                   selectedItem.fusionRecipes.map((recipe, idx) => (
                     <Card
                       key={idx}
@@ -291,7 +339,9 @@ export function SearchHistoryModal({
                         )}
                       </div>
                       <CardHeader>
-                        <CardTitle className="text-lg text-white">{recipe.name}</CardTitle>
+                        <CardTitle className="text-lg text-white">
+                          {recipe.name}
+                        </CardTitle>
                         <CardDescription className="line-clamp-2 text-gray-400">
                           {recipe.description}
                         </CardDescription>
@@ -300,7 +350,9 @@ export function SearchHistoryModal({
                         <div className="space-y-2 text-sm">
                           <div className="flex items-center gap-2 text-gray-300">
                             <Clock className="w-4 h-4 text-blue-400" />
-                            <span>{recipe.prepTime} + {recipe.cookTime}</span>
+                            <span>
+                              {recipe.prepTime} + {recipe.cookTime}
+                            </span>
                           </div>
                           <div className="flex items-center gap-2 text-gray-300">
                             <Users className="w-4 h-4 text-purple-400" />
@@ -313,7 +365,9 @@ export function SearchHistoryModal({
                 ) : (
                   <div className="col-span-full text-center py-12">
                     <ChefHat className="w-16 h-16 mx-auto mb-4 text-gray-600" />
-                    <p className="text-gray-400">No fusion recipes available for this combination</p>
+                    <p className="text-gray-400">
+                      No fusion recipes available for this combination
+                    </p>
                   </div>
                 )}
               </div>

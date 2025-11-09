@@ -152,7 +152,7 @@ export default function BlendedWorldPage() {
 
       const data: FusionRecipeResponse = await response.json();
       setFusionRecipes(data.fusionRecipes);
-      
+
       // Save to search history with fusion recipes
       saveSearchHistory(blendedMeals, data.fusionRecipes);
     } catch (error) {
