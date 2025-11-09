@@ -366,11 +366,15 @@ American, British, Canadian, Chinese, Croatian, Dutch, Egyptian, Filipino, Frenc
 
 ## Contributing
 
-This is a hackathon project for [Hackathon Name]. Contributions and feedback are welcome!
+This is a hackathon project for GreatUniHack 2025. Contributions and feedback are welcome!
 
 ## Team
 
-Project created for the GitHub Copilot Hackathon.
+Omer Ali Omer
+Aun Raza
+Ibraheem Iqbal
+Anas Bataweel
+Ismail Shafie
 
 ## Acknowledgments
 
